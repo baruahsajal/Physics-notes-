@@ -1,249 +1,538 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>B.Sc Physics — Semester Hub</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Physica Nexus | FYUGP Physics Portal</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-  <style>
-    :root{
-      --primary:#0b3d91;
-      --accent:#0066cc;
-      --bg:#f7f9fb;
-      --card:#ffffff;
-      --muted:#6b7280;
-      --success:#10b981;
-      --danger:#ef4444;
-    }
-    *{box-sizing:border-box}
-    body{
-      font-family: Inter, "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial;
-      background: linear-gradient(180deg,#f4f7fb 0%,var(--bg)100%);
-      color:#111827;
-      margin:0;
-      padding:20px;
-    }
-    .container{max-width:1100px;margin:0 auto}
-    header.site-header{text-align:center;margin-bottom:20px}
-    header.site-header h1{margin:0 0 6px;color:var(--primary)}
-    .lead{color:var(--muted);margin:0}
+    <!-- CRITICAL: Tailwind Configuration -->
+    <!-- Must run BEFORE Tailwind CDN loads to ensure theme works -->
+    <script>
+        window.tailwindConfig = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Rajdhani', 'sans-serif'],
+                        display: ['Orbitron', 'sans-serif'],
+                        body: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        space: {
+                            950: '#050507', // Deepest background
+                            900: '#0a0a0f', // Standard background
+                            800: '#13131f', // Card background
+                        },
+                        neon: {
+                            cyan: '#00f3ff',
+                            purple: '#bd00ff',
+                            green: '#00ff9d',
+                            pink: '#ff0055',
+                        }
+                    },
+                    backgroundImage: {
+                        'hero-glow': 'radial-gradient(circle at 50% 50%, rgba(0, 243, 255, 0.15) 0%, transparent 70%)',
+                    }
+                }
+            }
+        };
+    </script>
 
-    /* Card */
-    .card{background:var(--card);padding:16px;border-radius:10px;box-shadow:0 6px 18px rgba(15,23,42,0.06);margin-bottom:20px}
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Activate Config -->
+    <script>
+        tailwind.config = window.tailwindConfig;
+    </script>
 
-    /* Upload form */
-    .upload-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
-    label{display:block;font-size:0.9rem;margin-bottom:6px;color:#374151}
-    select,input[type="file"]{width:100%;padding:10px 12px;border-radius:8px;border:1px solid #e5e7eb;background:#fff}
-    .form-actions{text-align:right;margin-top:12px}
-    .btn{padding:10px 16px;border-radius:8px;border:none;cursor:pointer}
-    .btn.primary{background:linear-gradient(90deg,var(--accent),var(--primary));color:#fff}
-    .small-muted{color:var(--muted);font-size:0.9rem}
+    <style>
+        /* FALLBACK: Ensures screen isn't white if JS lags */
+        body {
+            background-color: #050507;
+            color: #e5e7eb;
+        }
 
-    /* messages */
-    .flash{padding:10px;border-radius:8px;margin-bottom:12px}
-    .flash.success{background:rgba(16,185,129,0.08);color:var(--success);border:1px solid rgba(16,185,129,0.12)}
-    .flash.error{background:rgba(239,68,68,0.06);color:var(--danger);border:1px solid rgba(239,68,68,0.08)}
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #050507; }
+        ::-webkit-scrollbar-thumb { background: #1f1f33; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #00f3ff; }
 
-    /* Syllabus accordion */
-    details.sem-level{margin-bottom:12px;border-radius:10px;overflow:hidden;border:1px solid #e6eefb}
-    details.sem-level>summary{
-      background:linear-gradient(90deg,rgba(11,61,145,0.95),rgba(0,102,204,0.95));
-      color:#fff;padding:12px 16px;font-weight:600;list-style:none;cursor:pointer;
-    }
-    details.type-level{margin:10px;border-left:4px solid var(--accent);border-radius:8px;overflow:hidden}
-    details.type-level>summary{background:#eef6ff;color:var(--primary);padding:10px 12px;font-weight:600;list-style:none;cursor:pointer}
+        /* Glassmorphism Effect */
+        .glass {
+            background: rgba(19, 19, 31, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        /* Card Styling */
+        .glass-card {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
 
-    .papers-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;padding:12px}
-    .paper-card{background:#fff;border-radius:8px;padding:10px;border:1px solid #eef3ff;box-shadow:0 4px 14px rgba(7,11,38,0.02)}
-    .paper-header h3{margin:0 0 8px 0;font-size:1.02rem;color:var(--accent)}
-    .syllabus-units{background:#fbfdff;padding:8px;border-radius:6px;margin-bottom:8px;border:1px dashed #e6eefb;font-size:0.95rem}
-    .unit-badge{display:inline-block;background:#f1f7ff;color:#0b3d91;padding:4px 8px;border-radius:999px;margin:3px 3px 0 0;font-size:0.85rem}
-    .file-list{list-style:none;padding:0;margin:6px 0 0 0}
-    .file-list li{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #f3f6fb;font-size:0.95rem}
-    .download-link{color:var(--accent);text-decoration:none;font-weight:600}
-    .muted{color:#9ca3af;font-style:italic}
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(0, 243, 255, 0.15);
+            border-color: rgba(0, 243, 255, 0.2);
+        }
 
-    footer.site-footer{text-align:center;margin-top:18px;color:var(--muted);font-size:0.9rem}
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        .spin-slow { animation: spin 8s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
 
-    @media (max-width:600px){.form-actions{text-align:center}}
-  </style>
-
-  <script>
-    // structure is injected by server-side templating: a nested object
-    // Example usage in JS: Object.keys(structure).forEach(...)
-    const structure = {{ structure | tojson }};
-  </script>
+        /* Background Grid Pattern */
+        .bg-grid {
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        }
+    </style>
 </head>
-<body>
-  <div class="container">
-    <header class="site-header">
-      <h1>📚 B.Sc Physics — Semester Hub</h1>
-      <p class="lead">Upload and browse notes: Physics (Major), Math (Minor), and Common Courses (MDC, VAC, AEC) — organized semester → paper → units.</p>
-    </header>
+<body class="bg-space-950 text-gray-200 overflow-x-hidden font-sans relative selection:bg-neon-cyan selection:text-black">
 
-    <main>
-      <section class="card upload-section" aria-labelledby="upload-heading">
-        <h2 id="upload-heading">📤 Upload Notes</h2>
+    <!-- Background Elements -->
+    <div class="fixed inset-0 bg-grid z-0 pointer-events-none"></div>
+    <div class="fixed top-0 left-0 w-full h-full bg-hero-glow z-0 pointer-events-none opacity-60"></div>
 
-        <!-- Flash messages (if any) -->
-        {% with messages = get_flashed_messages(with_categories=true) %}
-          {% if messages %}
-            {% for category, message in messages %}
-              <div class="flash {{ 'success' if category=='success' else 'error' }}">{{ message }}</div>
-            {% endfor %}
-          {% endif %}
-        {% endwith %}
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 glass border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center gap-3 cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-neon-cyan to-neon-purple flex items-center justify-center animate-pulse">
+                        <i class="fa-solid fa-atom text-white text-xl spin-slow"></i>
+                    </div>
+                    <span class="font-display font-bold text-2xl tracking-wider text-white">PHYSICA<span class="text-neon-cyan">NEXUS</span></span>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#home" class="hover:text-neon-cyan transition-colors px-3 py-2 rounded-md text-sm font-medium uppercase tracking-wide">Home</a>
+                        <a href="#academics" class="hover:text-neon-cyan transition-colors px-3 py-2 rounded-md text-sm font-medium uppercase tracking-wide">Academics</a>
+                        <a href="#about" class="hover:text-neon-cyan transition-colors px-3 py-2 rounded-md text-sm font-medium uppercase tracking-wide">About</a>
+                        <a href="https://github.com" target="_blank" class="bg-white/10 hover:bg-neon-cyan hover:text-black transition-all px-4 py-2 rounded-full text-sm font-bold border border-white/20">
+                            <i class="fab fa-github mr-2"></i>GitHub
+                        </a>
+                    </div>
+                </div>
 
-        <form id="upload-form" action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data">
-          <div class="upload-grid">
-            <div>
-              <label for="semester">Semester</label>
-              <select name="semester" id="semester" required onchange="updateTypes()">
-                <option value="">Select Semester</option>
-                {% for sem in structure.keys() %}
-                  <option value="{{ sem }}">{{ sem }}</option>
-                {% endfor %}
-              </select>
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden">
+                    <button onclick="toggleMobileMenu()" class="text-gray-300 hover:text-white focus:outline-none p-2">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu Panel -->
+        <div id="mobile-menu" class="hidden md:hidden glass border-t border-white/10 absolute w-full left-0">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#home" class="text-gray-300 hover:text-neon-cyan block px-3 py-2 rounded-md text-base font-medium">Home</a>
+                <a href="#academics" class="text-gray-300 hover:text-neon-cyan block px-3 py-2 rounded-md text-base font-medium">Academics</a>
+                <a href="#about" class="text-gray-300 hover:text-neon-cyan block px-3 py-2 rounded-md text-base font-medium">About</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="relative z-10 pt-20">
+        
+        <!-- Hero Section -->
+        <section id="home" class="min-h-screen flex items-center justify-center relative overflow-hidden px-4">
+            <div class="text-center max-w-5xl mx-auto">
+                <div class="inline-block px-4 py-1 mb-6 rounded-full border border-neon-cyan/30 bg-neon-cyan/10 text-neon-cyan text-sm font-display tracking-widest uppercase animate-float">
+                    FYUGP 2024-2025 Batch
+                </div>
+                <h1 class="text-5xl md:text-7xl lg:text-8xl font-display font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-400 mb-6 leading-tight drop-shadow-2xl">
+                    UNRAVEL THE <br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-neon-cyan to-neon-purple" style="text-shadow: 0 0 30px rgba(0, 243, 255, 0.2);">COSMOS</span>
+                </h1>
+                <p class="mt-4 text-xl text-gray-400 max-w-2xl mx-auto font-light leading-relaxed mb-10 font-body">
+                    A comprehensive digital portal for Physics Majors. Access syllabus, lecture notes, and research materials in one unified interface.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button onclick="scrollToSection('academics')" class="px-8 py-4 bg-neon-cyan text-black font-bold font-display rounded-full hover:shadow-[0_0_30px_rgba(0,243,255,0.4)] transition-all transform hover:-translate-y-1">
+                        Explore Syllabus <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </button>
+                    <button onclick="scrollToSection('academics'); switchTab('notes')" class="px-8 py-4 glass text-white font-bold font-display rounded-full hover:bg-white/10 transition-all border border-white/20">
+                        Download Notes <i class="fa-solid fa-download ml-2"></i>
+                    </button>
+                </div>
+                
+                <!-- Stats Strip -->
+                <div class="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8 border-t border-white/10 pt-8">
+                    <div class="text-center">
+                        <div class="text-3xl font-display font-bold text-white">6</div>
+                        <div class="text-sm text-gray-500 uppercase tracking-wider">Semesters</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-display font-bold text-neon-green">24+</div>
+                        <div class="text-sm text-gray-500 uppercase tracking-wider">Core Papers</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-display font-bold text-neon-purple">100%</div>
+                        <div class="text-sm text-gray-500 uppercase tracking-wider">Curated Notes</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-display font-bold text-neon-pink">∞</div>
+                        <div class="text-sm text-gray-500 uppercase tracking-wider">Possibilities</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Academic Hub (Tabs) -->
+        <section id="academics" class="py-20 px-4 max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row items-center justify-between mb-12 gap-6">
+                <h2 class="text-3xl font-display font-bold text-white">
+                    <span class="text-neon-cyan">///</span> ACADEMIC HUB
+                </h2>
+                
+                <!-- Tab Navigation -->
+                <div class="flex p-1 bg-space-800 rounded-xl border border-white/10 overflow-x-auto max-w-full">
+                    <button onclick="switchTab('syllabus')" id="tab-syllabus" class="tab-btn active px-6 py-2 rounded-lg text-sm font-bold transition-all whitespace-nowrap border border-transparent text-neon-cyan">
+                        <i class="fa-solid fa-book-open mr-2"></i>Syllabus
+                    </button>
+                    <button onclick="switchTab('notes')" id="tab-notes" class="tab-btn px-6 py-2 rounded-lg text-sm font-bold text-gray-400 hover:text-white transition-all whitespace-nowrap border border-transparent">
+                        <i class="fa-solid fa-file-pdf mr-2"></i>Notes Library
+                    </button>
+                    <button onclick="switchTab('common')" id="tab-common" class="tab-btn px-6 py-2 rounded-lg text-sm font-bold text-gray-400 hover:text-white transition-all whitespace-nowrap border border-transparent">
+                        <i class="fa-solid fa-layer-group mr-2"></i>Common Courses
+                    </button>
+                </div>
             </div>
 
-            <div>
-              <label for="course_type">Course Type</label>
-              <select name="course_type" id="course_type" required onchange="updatePapers()">
-                <option value="">Select Course Type</option>
-              </select>
+            <!-- Tab Content: Syllabus -->
+            <div id="content-syllabus" class="tab-content transition-opacity duration-300">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    
+                    <!-- Semester 1 -->
+                    <div class="glass-card rounded-2xl p-6 group relative overflow-hidden">
+                        <div class="absolute -right-4 -top-4 text-9xl font-display font-bold text-white/5 group-hover:text-neon-cyan/10 transition-colors pointer-events-none">01</div>
+                        <div class="inline-block bg-neon-cyan/10 text-neon-cyan px-3 py-1 rounded-full text-xs font-bold border border-neon-cyan/20 mb-4">SEMESTER 1</div>
+                        
+                        <h3 class="text-xl font-bold text-white mb-2">Foundations</h3>
+                        <p class="text-gray-400 text-sm mb-4">Mathematical framework & mechanics.</p>
+                        <ul class="space-y-3">
+                            <li class="flex items-start gap-3 text-sm text-gray-300">
+                                <i class="fa-solid fa-check text-neon-green mt-1"></i>
+                                <div>
+                                    <strong class="block text-white">PHY0100104</strong>
+                                    Mathematical Physics & Mechanics
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-3 text-sm text-gray-300">
+                                <i class="fa-solid fa-check text-neon-green mt-1"></i>
+                                <div>
+                                    <strong class="block text-white">SEC</strong>
+                                    AI in Physics (SWAYAM)
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Semester 2 -->
+                    <div class="glass-card rounded-2xl p-6 group relative overflow-hidden">
+                        <div class="absolute -right-4 -top-4 text-9xl font-display font-bold text-white/5 group-hover:text-neon-purple/10 transition-colors pointer-events-none">02</div>
+                        <div class="inline-block bg-neon-purple/10 text-neon-purple px-3 py-1 rounded-full text-xs font-bold border border-neon-purple/20 mb-4">SEMESTER 2</div>
+                        
+                        <h3 class="text-xl font-bold text-white mb-2">Fields & Forces</h3>
+                        <p class="text-gray-400 text-sm mb-4">Electricity, Magnetism and Advanced Math.</p>
+                        <ul class="space-y-3">
+                            <li class="flex items-start gap-3 text-sm text-gray-300">
+                                <i class="fa-solid fa-check text-neon-green mt-1"></i>
+                                <div>
+                                    <strong class="block text-white">PHY0200104</strong>
+                                    Math Physics, Elec & Magnetism
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-3 text-sm text-gray-300">
+                                <i class="fa-solid fa-check text-neon-green mt-1"></i>
+                                <div>
+                                    <strong class="block text-white">SEC</strong>
+                                    Workshop Skills in Physics
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+!-- Semester 3 -->
+                    <div class="glass-card rounded-2xl p-6 group relative overflow-hidden">
+                        <div class="absolute -right-4 -top-4 text-9xl font-display font-bold text-white/5 group-hover:text-neon-pink/10 transition-colors pointer-events-none">03</div>
+                        <div class="inline-block bg-neon-pink/10 text-neon-pink px-3 py-1 rounded-full text-xs font-bold border border-neon-pink/20 mb-4">SEMESTER 3</div>
+                        
+                        <h3 class="text-xl font-bold text-white mb-2">Waves & Light</h3>
+                        <p class="text-gray-400 text-sm mb-4">From optics to electromagnetic theory.</p>
+                        <ul class="space-y-3">
+                            <li class="flex items-start gap-3 text-sm text-gray-300">
+                                <i class="fa-solid fa-check text-neon-green mt-1"></i>
+                                <div>
+                                    <strong class="block text-white">PHY0300104</strong>
+                                    Waves & Optics
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-3 text-sm text-gray-300">
+                                <i class="fa-solid fa-check text-neon-green mt-1"></i>
+                                <div>
+                                    <strong class="block text-white">PHY0300204</strong>
+                                    Electromagnetic Theory
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Semester 4 -->
+                    <div class="glass-card rounded-2xl p-6 group relative overflow-hidden">
+                        <div class="absolute -right-4 -top-4 text-9xl font-display font-bold text-white/5 group-hover:text-yellow-500/10 transition-colors pointer-events-none">04</div>
+                        <div class="inline-block bg-yellow-500/10 text-yellow-500 px-3 py-1 rounded-full text-xs font-bold border border-yellow-500/20 mb-4">SEMESTER 4</div>
+                        
+                        <h3 class="text-xl font-bold text-white mb-2">Quantum Realm</h3>
+                        <p class="text-gray-400 text-sm mb-4">Entering modern physics and electronics.</p>
+                        <ul class="space-y-2">
+                            <li class="text-sm text-gray-300"><strong class="text-white">PHY0400104</strong> Classical Mechanics</li>
+                            <li class="text-sm text-gray-300"><strong class="text-white">PHY0400204</strong> Quantum Mechanics-I</li>
+                            <li class="text-sm text-gray-300"><strong class="text-white">PHY0400304</strong> Analog Electronics</li>
+                            <li class="text-sm text-gray-300"><strong class="text-white">PHY0400404</strong> Mathematical Physics</li>
+                        </ul>
+                    </div>
+
+                     <!-- Semester 5 -->
+                     <div class="glass-card rounded-2xl p-6 group relative overflow-hidden">
+                        <div class="absolute -right-4 -top-4 text-9xl font-display font-bold text-white/5 group-hover:text-blue-500/10 transition-colors pointer-events-none">05</div>
+                        <div class="inline-block bg-blue-500/10 text-blue-500 px-3 py-1 rounded-full text-xs font-bold border border-blue-500/20 mb-4">SEMESTER 5</div>
+                        
+                        <h3 class="text-xl font-bold text-white mb-2">Matter & Heat</h3>
+                        <p class="text-gray-400 text-sm mb-4">Structure of matter and thermodynamics.</p>
+                        <ul class="space-y-2">
+                            <li class="text-sm text-gray-300"><strong class="text-white">PHY0500104</strong> Atomic & Molecular</li>
+                            <li class="text-sm text-gray-300"><strong class="text-white">PHY0500204</strong> Condensed Matter</li>
+                            <li class="text-sm text-gray-300"><strong class="text-white">PHY0500304</strong> Heat & Thermodynamics</li>
+                        </ul>
+                    </div>
+
+                     <!-- Semester 6 -->
+                     <div class="glass-card rounded-2xl p-6 group relative overflow-hidden">
+                        <div class="absolute -right-4 -top-4 text-9xl font-display font-bold text-white/5 group-hover:text-red-500/10 transition-colors pointer-events-none">06</div>
+                        <div class="inline-block bg-red-500/10 text-red-500 px-3 py-1 rounded-full text-xs font-bold border border-red-500/20 mb-4">SEMESTER 6</div>
+                        
+                        <h3 class="text-xl font-bold text-white mb-2">Advanced Frontiers</h3>
+                        <p class="text-gray-400 text-sm mb-4">Nuclear physics, astrophysics and digital systems.</p>
+                        <ul class="space-y-2">
+                            <li class="text-sm text-gray-300"><strong class="text-white">PHY0600104</strong> Nuclear & Particle</li>
+                            <li class="text-sm text-gray-300"><strong class="text-white">PHY0600204</strong> Digital Electronics</li>
+                            <li class="text-sm text-gray-300"><strong class="text-white">PHY0600304</strong> Astronomy & Astrophysics</li>
+                            <li class="text-sm text-gray-300"><strong class="text-white">PHY0600404</strong> Statistical Mechanics</li>
+                        </ul>
+                    </div>
+
+                </div>
             </div>
 
-            <div>
-              <label for="paper">Paper / Subject</label>
-              <select name="paper" id="paper" required>
-                <option value="">Select Paper</option>
-              </select>
-            </div>
+            <!-- Tab Content: Notes -->
+            <div id="content-notes" class="tab-content hidden">
+                <!-- Search Bar -->
+                <div class="max-w-xl mx-auto mb-10 relative">
+                    <input type="text" id="notesSearch" placeholder="Search notes (e.g., 'Quantum', 'Optics')..." class="w-full bg-space-800 border border-white/10 rounded-full py-3 px-6 text-white focus:outline-none focus:border-neon-cyan focus:ring-1 focus:ring-neon-cyan transition-all placeholder-gray-500">
+                    <i class="fa-solid fa-search absolute right-6 top-4 text-gray-500"></i>
+                </div>
 
-            <div>
-              <label for="file">File</label>
-              <input type="file" id="file" name="file" required>
-              <div class="small-muted" style="margin-top:6px">Allowed: pdf, docx, pptx, jpg, png. Max recommended size: 50MB.</div>
-            </div>
-          </div>
-
-          <div class="form-actions">
-            <button type="submit" class="btn primary">Upload</button>
-          </div>
-        </form>
-      </section>
-
-      <section class="card syllabus-section" aria-labelledby="syllabus-heading">
-        <h2 id="syllabus-heading">📖 Syllabus & Uploaded Notes</h2>
-
-        {% for sem, types in structure.items() %}
-          <details class="sem-level" {% if loop.first %}open{% endif %}>
-            <summary>{{ sem }}</summary>
-            <div class="sem-content">
-              {% for type, papers in types.items() %}
-                <details class="type-level">
-                  <summary>{{ type }}</summary>
-
-                  <div class="papers-grid">
-                    {% for paper_name, units in papers.items() %}
-                      <article class="paper-card" aria-labelledby="paper-{{ loop.index }}">
-                        <header class="paper-header">
-                          <h3 id="paper-{{ loop.index }}">📄 {{ paper_name }}</h3>
-                        </header>
-
-                        <div class="syllabus-units">
-                          <strong>Units:</strong>
-                          <div class="unit-list">
-                            {% for unit in units %}
-                              <span class="unit-badge">{{ unit }}</span>
-                            {% endfor %}
-                          </div>
+                <div class="space-y-4" id="notesContainer">
+                    
+                    <!-- Note Item 1 -->
+                    <div class="note-item glass-card p-5 rounded-xl flex flex-col md:flex-row items-center justify-between gap-4 hover:bg-white/5 transition-all cursor-pointer">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-lg bg-red-500/20 text-red-400 flex items-center justify-center text-xl shrink-0">
+                                <i class="fa-solid fa-file-pdf"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold text-lg">Vector Calculus & Fields</h4>
+                                <p class="text-sm text-gray-400">PHY0100104 • Unit 1 • Complete Derivations</p>
+                            </div>
                         </div>
+                        <a href="#" class="px-5 py-2 bg-space-800 hover:bg-neon-cyan hover:text-black border border-white/10 rounded-lg text-sm font-bold transition-all flex items-center gap-2 whitespace-nowrap">
+                            Download <i class="fa-solid fa-download"></i>
+                        </a>
+                    </div>
 
-                        <div class="uploaded-files">
-                          <strong>Notes:</strong>
-                          <ul class="file-list">
-                            {% set file_list = files[sem][type][paper_name] %}
-                            {% if file_list %}
-                              {% for f in file_list %}
-                                <li>
-                                  <span class="file-name">{{ f }}</span>
-                                  <a class="download-link" href="{{ url_for('download_file', filepath=sem + '/' + type + '/' + paper_name + '/' + f) }}">⬇ Download</a>
-                                </li>
-                              {% endfor %}
-                            {% else %}
-                              <li class="muted">No notes uploaded yet.</li>
-                            {% endif %}
-                          </ul>
+                    <!-- Note Item 2 -->
+                    <div class="note-item glass-card p-5 rounded-xl flex flex-col md:flex-row items-center justify-between gap-4 hover:bg-white/5 transition-all cursor-pointer">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center text-xl shrink-0">
+                                <i class="fa-solid fa-file-pdf"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold text-lg">Wave Motion & Oscillations</h4>
+                                <p class="text-sm text-gray-400">PHY0300104 • Unit 2 • Lecture Slides</p>
+                            </div>
                         </div>
-                      </article>
-                    {% endfor %}
-                  </div>
+                        <a href="#" class="px-5 py-2 bg-space-800 hover:bg-neon-cyan hover:text-black border border-white/10 rounded-lg text-sm font-bold transition-all flex items-center gap-2 whitespace-nowrap">
+                            Download <i class="fa-solid fa-download"></i>
+                        </a>
+                    </div>
 
-                </details>
-              {% endfor %}
+                    <!-- Note Item 3 -->
+                    <div class="note-item glass-card p-5 rounded-xl flex flex-col md:flex-row items-center justify-between gap-4 hover:bg-white/5 transition-all cursor-pointer">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl shrink-0">
+                                <i class="fa-solid fa-file-pdf"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold text-lg">Introduction to Quantum Mechanics</h4>
+                                <p class="text-sm text-gray-400">PHY0400204 • Unit 1 • Handwritten Notes</p>
+                            </div>
+                        </div>
+                        <a href="#" class="px-5 py-2 bg-space-800 hover:bg-neon-cyan hover:text-black border border-white/10 rounded-lg text-sm font-bold transition-all flex items-center gap-2 whitespace-nowrap">
+                            Download <i class="fa-solid fa-download"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <p class="text-center text-gray-500 mt-8 text-sm italic">More notes are being digitized. Check back soon.</p>
             </div>
-          </details>
-        {% endfor %}
 
-      </section>
+            <!-- Tab Content: Common Courses -->
+            <div id="content-common" class="tab-content hidden">
+                <div class="bg-gradient-to-r from-green-900/40 to-emerald-900/40 border border-emerald-500/30 rounded-2xl p-8 mb-8 text-center">
+                    <h3 class="text-2xl font-bold text-white mb-2">NEP Common Courses</h3>
+                    <p class="text-emerald-300">Ability Enhancement (AEC), Skill Enhancement (SEC), and Value Added (VAC)</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- AEC -->
+                    <div class="glass-card p-6 rounded-xl">
+                        <h4 class="text-lg font-bold text-neon-cyan mb-4 border-b border-white/10 pb-2">Ability Enhancement (AEC)</h4>
+                        <ul class="space-y-3">
+                            <li class="flex justify-between items-center text-gray-300 text-sm">
+                                <span>English Communication</span>
+                                <span class="bg-white/10 px-2 py-1 rounded text-xs text-white">Sem 1 & 2</span>
+                            </li>
+                            <li class="flex justify-between items-center text-gray-300 text-sm">
+                                <span>Modern Indian Language (MIL)</span>
+                                <span class="bg-white/10 px-2 py-1 rounded text-xs text-white">Sem 1 & 5</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- SEC -->
+                    <div class="glass-card p-6 rounded-xl">
+                        <h4 class="text-lg font-bold text-neon-green mb-4 border-b border-white/10 pb-2">Skill Enhancement (SEC)</h4>
+                        <ul class="space-y-3">
+                            <li class="flex justify-between items-center text-gray-300 text-sm">
+                                <span>AI in Physics (SWAYAM)</span>
+                                <span class="bg-white/10 px-2 py-1 rounded text-xs text-white">Sem 1</span>
+                            </li>
+                            <li class="flex justify-between items-center text-gray-300 text-sm">
+                                <span>Basic Workshop Skills</span>
+                                <span class="bg-white/10 px-2 py-1 rounded text-xs text-white">Sem 2</span>
+                            </li>
+                             <li class="flex justify-between items-center text-gray-300 text-sm">
+                                <span>Programming with Python</span>
+                                <span class="bg-white/10 px-2 py-1 rounded text-xs text-white">Sem 3</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="border-t border-white/10 bg-space-950 pt-16 pb-8">
+            <div class="max-w-7xl mx-auto px-4 text-center">
+                <div class="flex justify-center gap-4 mb-8">
+                    <a href="#" class="w-10 h-10 rounded-full bg-white/5 hover:bg-neon-cyan hover:text-black flex items-center justify-center transition-all">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-white/5 hover:bg-neon-purple hover:text-black flex items-center justify-center transition-all">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="mailto:sajalbaruah51@gmail.com" class="w-10 h-10 rounded-full bg-white/5 hover:bg-neon-green hover:text-black flex items-center justify-center transition-all">
+                        <i class="fa-solid fa-envelope"></i>
+                    </a>
+                </div>
+                <p class="text-gray-500 text-sm">
+                    &copy; 2025 Physics Portal. Designed with <i class="fa-solid fa-heart text-neon-pink mx-1"></i> for Science.
+                </p>
+                <p class="text-gray-600 text-xs mt-2">B.Sc. Physics Student Project</p>
+            </div>
+        </footer>
+
     </main>
 
-    <footer class="site-footer">
-      <small>Organize your B.Sc. notes — Physics Major, Math Minor, and common courses. Customize the syllabus on the server.</small>
-    </footer>
-  </div>
+    <!-- Interactive Scripts -->
+    <script>
+        // Tab Switching Logic
+        function switchTab(tabId) {
+            // Hide all content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            
+            // Remove active state from all buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active', 'text-neon-cyan');
+                btn.classList.add('text-gray-400');
+            });
 
-  <script>
-    // Cascading selects — reads the `structure` object provided by the template
-    function updateTypes() {
-      const sem = document.getElementById('semester').value;
-      const typeSelect = document.getElementById('course_type');
-      const paperSelect = document.getElementById('paper');
+            // Show selected content
+            document.getElementById('content-' + tabId).classList.remove('hidden');
+            
+            // Add active state to selected button
+            const activeBtn = document.getElementById('tab-' + tabId);
+            activeBtn.classList.add('active');
+            activeBtn.classList.remove('text-gray-400');
+            activeBtn.classList.add('text-neon-cyan');
+        }
 
-      typeSelect.innerHTML = '<option value="">Select Course Type</option>';
-      paperSelect.innerHTML = '<option value="">Select Paper</option>';
+        // Smooth Scroll Helper
+        function scrollToSection(id) {
+            const section = document.getElementById(id);
+            if(section) {
+                section.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
 
-      if (sem && structure[sem]) {
-        Object.keys(structure[sem]).forEach(type => {
-          const opt = document.createElement('option');
-          opt.value = type;
-          opt.textContent = type;
-          typeSelect.appendChild(opt);
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Search Filter for Notes
+        document.getElementById('notesSearch').addEventListener('keyup', function(e) {
+            const searchText = e.target.value.toLowerCase();
+            const notes = document.querySelectorAll('.note-item');
+            
+            notes.forEach(note => {
+                const text = note.innerText.toLowerCase();
+                if(text.includes(searchText)) {
+                    note.style.display = 'flex';
+                } else {
+                    note.style.display = 'none';
+                }
+            });
         });
-      }
-    }
-
-    function updatePapers() {
-      const sem = document.getElementById('semester').value;
-      const type = document.getElementById('course_type').value;
-      const paperSelect = document.getElementById('paper');
-
-      paperSelect.innerHTML = '<option value="">Select Paper</option>';
-
-      if (sem && type && structure[sem] && structure[sem][type]) {
-        Object.keys(structure[sem][type]).forEach(paper => {
-          const opt = document.createElement('option');
-          opt.value = paper;
-          opt.textContent = paper;
-          paperSelect.appendChild(opt);
-        });
-      }
-    }
-
-    // Protect against accidental form submission without selecting structured fields
-    document.getElementById('upload-form').addEventListener('submit', function(e){
-      const sem = document.getElementById('semester').value;
-      const type = document.getElementById('course_type').value;
-      const paper = document.getElementById('paper').value;
-      const file = document.getElementById('file').files[0];
-
-      if (!sem || !type || !paper || !file) {
-        e.preventDefault();
-        alert('Please select semester, course type, paper and choose a file before uploading.');
-      }
-    });
-  </script>
+    </script>
 </body>
 </html>
+
