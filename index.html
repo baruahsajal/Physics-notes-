@@ -3,354 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GU Physics | The Academic Vault</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <title>B.Sc Physics Complete Syllabus Hub</title>
     <style>
-        :root {
-            --bg-deep: #0B0F19;
-            --glass-panel: rgba(255, 255, 255, 0.05);
-            --neon-blue: #3b82f6;
-            --neon-green: #10b981;
-            --neon-purple: #8b5cf6;
-        }
-
-        body {
-            font-family: 'Outfit', sans-serif;
-            background-color: var(--bg-deep);
-            color: #e2e8f0;
-            overflow-x: hidden;
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.1) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 40%);
-        }
-
-        h1, h2, h3, .heading-font { font-family: 'Space Grotesk', sans-serif; }
-
-        /* Glassmorphism Cards */
-        .glass-card {
-            background: var(--glass-panel);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, border-color 0.3s ease;
-        }
-
-        .glass-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(255, 255, 255, 0.3);
-        }
-
-        /* Navigation Pills */
-        .nav-pill {
-            cursor: pointer;
-            padding: 8px 20px;
-            border-radius: 50px;
-            font-size: 0.9rem;
-            transition: all 0.3s;
-            border: 1px solid transparent;
-        }
-        .nav-pill:hover { background: rgba(255,255,255,0.1); }
-        .nav-pill.active { background: var(--neon-blue); color: white; box-shadow: 0 0 15px rgba(59, 130, 246, 0.5); }
-
-        /* Hide sections by default */
-        .view-section { display: none; animation: fadeIn 0.5s ease-out; }
-        .view-section.active { display: block; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        :root { --primary: #003366; --secondary: #0066cc; --bg: #f4f7f6; --text: #333; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); max-width: 1000px; margin: 0 auto; padding: 20px; }
         
-        .back-btn { cursor: pointer; transition: 0.3s; }
-        .back-btn:hover { color: var(--neon-blue); transform: translateX(-5px); }
+        h1 { text-align: center; color: var(--primary); border-bottom: 2px solid var(--secondary); padding-bottom: 10px; }
+
+        /* Upload Box */
+        .upload-section { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 30px; }
+        select, input { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        button { background: var(--secondary); color: white; border: none; padding: 12px; width: 100%; border-radius: 4px; cursor: pointer; font-size: 16px; }
+        button:hover { background: var(--primary); }
+
+        /* Syllabus Accordion */
+        details { margin-bottom: 10px; background: white; border-radius: 5px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        summary { cursor: pointer; padding: 15px; font-weight: bold; list-style: none; user-select: none; }
+        
+        /* Semester Level */
+        .sem-level > summary { background: var(--primary); color: white; }
+        
+        /* Type Level (Major/Minor) */
+        .type-level { margin: 10px; border-left: 3px solid var(--secondary); }
+        .type-level > summary { background: #e6f2ff; color: var(--primary); }
+
+        /* Paper Level */
+        .paper-box { padding: 15px; border-top: 1px solid #eee; }
+        .paper-header { font-size: 1.1em; font-weight: bold; color: var(--secondary); display: flex; justify-content: space-between; align-items: center; }
+        
+        /* Syllabus Units */
+        .syllabus-units { font-size: 0.85em; color: #666; background: #fafafa; padding: 8px; margin: 5px 0 15px 0; border-radius: 4px; border: 1px dashed #ccc; }
+        .unit-badge { display: inline-block; background: #eee; padding: 2px 6px; margin: 2px; border-radius: 3px; }
+
+        /* Files */
+        .file-list { list-style: none; padding: 0; }
+        .file-list li { display: flex; justify-content: space-between; padding: 8px; border-bottom: 1px solid #f0f0f0; }
+        .file-list a { color: var(--secondary); text-decoration: none; font-weight: bold; }
     </style>
+
+    <script>
+        const structure = {{ structure | tojson }};
+
+        function updateTypes() {
+            const sem = document.getElementById('semester').value;
+            const typeSelect = document.getElementById('course_type');
+            const paperSelect = document.getElementById('paper');
+            
+            typeSelect.innerHTML = '<option value="">Select Course Type</option>';
+            paperSelect.innerHTML = '<option value="">Select Paper</option>';
+
+            if (sem) {
+                Object.keys(structure[sem]).forEach(type => {
+                    typeSelect.innerHTML += `<option value="${type}">${type}</option>`;
+                });
+            }
+        }
+
+        function updatePapers() {
+            const sem = document.getElementById('semester').value;
+            const type = document.getElementById('course_type').value;
+            const paperSelect = document.getElementById('paper');
+
+            paperSelect.innerHTML = '<option value="">Select Paper</option>';
+
+            if (sem && type) {
+                // Here "papers" is an object { "PaperName": [Units], ... }
+                // We only need the keys (Paper Names) for the dropdown
+                Object.keys(structure[sem][type]).forEach(paper => {
+                    paperSelect.innerHTML += `<option value="${paper}">${paper}</option>`;
+                });
+            }
+        }
+    </script>
 </head>
 <body>
 
-    <nav class="fixed top-0 w-full z-50 bg-[#0B0F19]/80 backdrop-blur-md border-b border-white/5">
-        <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
-            <div class="flex items-center gap-3" onclick="goHome()" style="cursor: pointer;">
-                <div class="w-10 h-10 rounded-lg bg-gradient-to-tr from-blue-600 to-cyan-400 flex items-center justify-center shadow-lg shadow-blue-500/20">
-                    <i class="fas fa-atom text-white"></i>
-                </div>
-                <h1 class="text-xl font-bold tracking-tight">PHYSICS<span class="text-blue-400">HUB</span></h1>
-            </div>
+    <h1>📚 Physics Major & Math Minor Hub</h1>
+
+    <div class="upload-section">
+        <h3>📤 Upload Notes</h3>
+        <form action="/upload" method="POST" enctype="multipart/form-data">
+            <select name="semester" id="semester" onchange="updateTypes()" required>
+                <option value="">Select Semester</option>
+                {% for sem in structure.keys() %}
+                <option value="{{ sem }}">{{ sem }}</option>
+                {% endfor %}
+            </select>
+
+            <select name="course_type" id="course_type" onchange="updatePapers()" required>
+                <option value="">Select Course Type</option>
+            </select>
+
+            <select name="paper" id="paper" required>
+                <option value="">Select Paper</option>
+            </select>
+
+            <input type="file" name="file" required>
+            <button type="submit">Upload</button>
+        </form>
+    </div>
+
+    {% for sem, types in structure.items() %}
+    <details class="sem-level">
+        <summary>{{ sem }}</summary>
+        
+        {% for type, papers in types.items() %}
+        <details class="type-level">
+            <summary>{{ type }}</summary>
             
-            <div class="hidden md:flex gap-6">
-                <button onclick="goHome()" class="text-sm font-medium hover:text-blue-400 transition">HOME</button>
-                <button onclick="showSyllabus()" class="text-sm font-medium hover:text-blue-400 transition">SYLLABUS</button>
-                <button onclick="showNotesHub()" class="px-5 py-2 rounded-full bg-blue-600/20 text-blue-400 border border-blue-600/50 hover:bg-blue-600 hover:text-white transition text-sm font-bold">
-                    NOTES LIBRARY
-                </button>
-            </div>
-        </div>
-    </nav>
-
-    <main class="max-w-7xl mx-auto px-6 pt-32 pb-20 min-h-screen">
-
-        <section id="view-home" class="view-section active text-center">
-            <div class="py-20">
-                <span class="px-4 py-1 rounded-full border border-green-500/30 bg-green-500/10 text-green-400 text-xs font-bold tracking-widest uppercase mb-6 inline-block">Updated for FYUGP 2025</span>
-                <h1 class="text-6xl md:text-8xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-b from-white to-slate-500">
-                    Explore the <br>Laws of Nature.
-                </h1>
-                <p class="text-slate-400 text-lg max-w-2xl mx-auto mb-10">
-                    A curated digital repository for Gauhati University Physics Major, Math Minor, and Common Course notes.
-                </p>
-                <div class="flex justify-center gap-4">
-                    <button onclick="showNotesHub()" class="px-8 py-4 rounded-full bg-blue-600 text-white font-bold hover:bg-blue-500 transition shadow-lg shadow-blue-600/30">
-                        Access Notes <i class="fas fa-arrow-right ml-2"></i>
-                    </button>
-                    <button onclick="showSyllabus()" class="px-8 py-4 rounded-full glass-card hover:bg-white/10 transition font-bold">
-                        View Syllabus
-                    </button>
+            {% for paper_name, units in papers.items() %}
+            <div class="paper-box">
+                <div class="paper-header">
+                    <span>📄 {{ paper_name }}</span>
                 </div>
-            </div>
-        </section>
-
-        <section id="view-hub" class="view-section">
-            <h2 class="text-3xl font-bold mb-2">Select Your Stream</h2>
-            <p class="text-slate-400 mb-10">Choose a category to browse semester-wise materials.</p>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div onclick="openStream('physics')" class="glass-card p-8 rounded-3xl cursor-pointer group relative overflow-hidden">
-                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition"><i class="fas fa-atom text-8xl text-blue-500"></i></div>
-                    <h3 class="text-2xl font-bold text-white mb-2">Physics Major</h3>
-                    <p class="text-sm text-slate-400">Core Papers (PHY)</p>
-                    <div class="mt-6 text-blue-400 text-sm font-bold group-hover:translate-x-2 transition flex items-center gap-2">
-                        Browse 8 Semesters <i class="fas fa-chevron-right"></i>
-                    </div>
-                </div>
-
-                <div onclick="openStream('math')" class="glass-card p-8 rounded-3xl cursor-pointer group relative overflow-hidden">
-                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition"><i class="fas fa-square-root-variable text-8xl text-green-500"></i></div>
-                    <h3 class="text-2xl font-bold text-white mb-2">Math Minor</h3>
-                    <p class="text-sm text-slate-400">Minor Papers (MAT)</p>
-                    <div class="mt-6 text-green-400 text-sm font-bold group-hover:translate-x-2 transition flex items-center gap-2">
-                        Browse Semesters <i class="fas fa-chevron-right"></i>
-                    </div>
-                </div>
-
-                <div onclick="openStream('common')" class="glass-card p-8 rounded-3xl cursor-pointer group relative overflow-hidden">
-                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition"><i class="fas fa-shapes text-8xl text-purple-500"></i></div>
-                    <h3 class="text-2xl font-bold text-white mb-2">Common Courses</h3>
-                    <p class="text-sm text-slate-400">VAC, MDC & AEC</p>
-                    <div class="mt-6 text-purple-400 text-sm font-bold group-hover:translate-x-2 transition flex items-center gap-2">
-                        Browse Categories <i class="fas fa-chevron-right"></i>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="view-physics" class="view-section">
-            <div class="flex items-center gap-4 mb-8">
-                <div onclick="showNotesHub()" class="back-btn text-slate-400"><i class="fas fa-arrow-left"></i> Back</div>
-                <h2 class="text-3xl font-bold text-blue-400">Physics Major</h2>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 
-                <div class="glass-card p-6 rounded-2xl">
-                    <div class="flex justify-between items-start mb-4">
-                        <span class="bg-blue-500/20 text-blue-400 px-3 py-1 rounded-full text-xs font-bold">SEMESTER I</span>
-                    </div>
-                    <h3 class="text-xl font-bold mb-4">PHY101: Math Physics & Mechanics</h3>
-                    <div class="space-y-2">
-                        <a href="YOUR_LINK_HERE" class="block bg-white/5 p-3 rounded-lg text-sm hover:bg-blue-600/20 hover:text-blue-300 transition flex justify-between">
-                            <span><i class="fas fa-file-pdf mr-2"></i> Unit 1: Vector Calculus</span> <i class="fas fa-download"></i>
-                        </a>
-                        <a href="YOUR_LINK_HERE" class="block bg-white/5 p-3 rounded-lg text-sm hover:bg-blue-600/20 hover:text-blue-300 transition flex justify-between">
-                            <span><i class="fas fa-file-pdf mr-2"></i> Part B: Mechanics</span> <i class="fas fa-download"></i>
-                        </a>
-                    </div>
+                <div class="syllabus-units">
+                    <strong>Syllabus Units:</strong><br>
+                    {% for unit in units %}
+                        <span class="unit-badge">{{ unit }}</span>
+                    {% endfor %}
                 </div>
 
-                <div class="glass-card p-6 rounded-2xl">
-                    <div class="flex justify-between items-start mb-4">
-                        <span class="bg-blue-500/20 text-blue-400 px-3 py-1 rounded-full text-xs font-bold">SEMESTER II</span>
-                    </div>
-                    <h3 class="text-xl font-bold mb-4">PHY151: Electricity & Magnetism</h3>
-                    <div class="space-y-2">
-                        <a href="#" class="block bg-white/5 p-3 rounded-lg text-sm hover:bg-blue-600/20 hover:text-blue-300 transition flex justify-between">
-                            <span><i class="fas fa-file-pdf mr-2"></i> Math Physics II</span> <i class="fas fa-download"></i>
-                        </a>
-                        <a href="#" class="block bg-white/5 p-3 rounded-lg text-sm hover:bg-blue-600/20 hover:text-blue-300 transition flex justify-between">
-                            <span><i class="fas fa-file-pdf mr-2"></i> Electrostatics & Magnetism</span> <i class="fas fa-download"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="glass-card p-6 rounded-2xl">
-                    <div class="flex justify-between items-start mb-4">
-                        <span class="bg-blue-500/20 text-blue-400 px-3 py-1 rounded-full text-xs font-bold">SEMESTER III</span>
-                    </div>
-                    <h3 class="text-xl font-bold mb-4">PHY201: Waves & Optics</h3>
-                    <div class="space-y-2">
-                        <a href="#" class="block bg-white/5 p-3 rounded-lg text-sm hover:bg-blue-600/20 hover:text-blue-300 transition flex justify-between">
-                            <span><i class="fas fa-file-pdf mr-2"></i> Complete Notes</span> <i class="fas fa-download"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="glass-card p-6 rounded-2xl">
-                    <div class="flex justify-between items-start mb-4">
-                        <span class="bg-blue-500/20 text-blue-400 px-3 py-1 rounded-full text-xs font-bold">SEMESTER IV</span>
-                    </div>
-                    <h3 class="text-xl font-bold mb-4">Classical & Quantum Mechanics</h3>
-                    <div class="space-y-2">
-                        <a href="#" class="block bg-white/5 p-3 rounded-lg text-sm hover:bg-blue-600/20 hover:text-blue-300 transition flex justify-between">
-                            <span><i class="fas fa-file-pdf mr-2"></i> Classical Mechanics</span> <i class="fas fa-download"></i>
-                        </a>
-                        <a href="#" class="block bg-white/5 p-3 rounded-lg text-sm hover:bg-blue-600/20 hover:text-blue-300 transition flex justify-between">
-                            <span><i class="fas fa-file-pdf mr-2"></i> Quantum Mechanics I</span> <i class="fas fa-download"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="glass-card p-6 rounded-2xl">
-                    <div class="flex justify-between items-start mb-4">
-                        <span class="bg-blue-500/20 text-blue-400 px-3 py-1 rounded-full text-xs font-bold">SEMESTER V</span>
-                    </div>
-                    <h3 class="text-xl font-bold mb-4">Atomic & Condensed Matter</h3>
-                    <div class="space-y-2">
-                        <a href="#" class="block bg-white/5 p-3 rounded-lg text-sm hover:bg-blue-600/20 hover:text-blue-300 transition flex justify-between">
-                            <span><i class="fas fa-file-pdf mr-2"></i> Atomic & Molecular Physics</span> <i class="fas fa-download"></i>
-                        </a>
-                        <a href="#" class="block bg-white/5 p-3 rounded-lg text-sm hover:bg-blue-600/20 hover:text-blue-300 transition flex justify-between">
-                            <span><i class="fas fa-file-pdf mr-2"></i> Condensed Matter Physics</span> <i class="fas fa-download"></i>
-                        </a>
-                    </div>
-                </div>
-
-                 <div class="glass-card p-6 rounded-2xl">
-                    <div class="flex justify-between items-start mb-4">
-                        <span class="bg-blue-500/20 text-blue-400 px-3 py-1 rounded-full text-xs font-bold">SEMESTER VI</span>
-                    </div>
-                    <h3 class="text-xl font-bold mb-4">Nuclear & Astro Physics</h3>
-                    <div class="space-y-2">
-                        <a href="#" class="block bg-white/5 p-3 rounded-lg text-sm hover:bg-blue-600/20 hover:text-blue-300 transition flex justify-between">
-                            <span><i class="fas fa-file-pdf mr-2"></i> Nuclear & Particle Physics</span> <i class="fas fa-download"></i>
-                        </a>
-                        <a href="#" class="block bg-white/5 p-3 rounded-lg text-sm hover:bg-blue-600/20 hover:text-blue-300 transition flex justify-between">
-                            <span><i class="fas fa-file-pdf mr-2"></i> Astronomy & Astrophysics</span> <i class="fas fa-download"></i>
-                        </a>
-                    </div>
-                </div>
-
+                <ul class="file-list">
+                    {% set file_list = files[sem][type][paper_name] %}
+                    {% if file_list %}
+                        {% for f in file_list %}
+                        <li>
+                            <span>{{ f }}</span>
+                            <a href="{{ url_for('download_file', filepath=sem + '/' + type + '/' + paper_name + '/' + f) }}">⬇ Download</a>
+                        </li>
+                        {% endfor %}
+                    {% else %}
+                        <li style="color:#999; font-style:italic;">No notes uploaded yet.</li>
+                    {% endif %}
+                </ul>
             </div>
-<section id="view-math" class="view-section">
-            <div class="flex items-center gap-4 mb-8">
-                <div onclick="showNotesHub()" class="back-btn text-slate-400"><i class="fas fa-arrow-left"></i> Back</div>
-                <h2 class="text-3xl font-bold text-green-400">Mathematics Minor</h2>
-            </div>
+            {% endfor %}
+            
+        </details>
+        {% endfor %}
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="glass-card p-6 rounded-2xl border-l-4 border-green-500">
-                    <span class="text-xs font-bold text-green-400 mb-2 block">SEMESTER I</span>
-                    <h3 class="text-xl font-bold mb-2">Classical Algebra</h3>
-                    <p class="text-sm text-slate-400 mb-4">MAT010104 | Matrix Algebra & Equations</p>
-                    <a href="#" class="block text-center py-2 rounded-lg bg-green-500/20 text-green-400 hover:bg-green-500 hover:text-white transition text-sm font-bold">Download PDF</a>
-                </div>
+    </details>
+    {% endfor %}
 
-                <div class="glass-card p-6 rounded-2xl border-l-4 border-green-500">
-                    <span class="text-xs font-bold text-green-400 mb-2 block">SEMESTER II</span>
-                    <h3 class="text-xl font-bold mb-2">Calculus</h3>
-                    <p class="text-sm text-slate-400 mb-4">MAT020104 | Differential & Integral</p>
-                    <a href="#" class="block text-center py-2 rounded-lg bg-green-500/20 text-green-400 hover:bg-green-500 hover:text-white transition text-sm font-bold">Download PDF</a>
-                </div>
-
-                <div class="glass-card p-6 rounded-2xl border-l-4 border-green-500">
-                    <span class="text-xs font-bold text-green-400 mb-2 block">SEMESTER III</span>
-                    <h3 class="text-xl font-bold mb-2">Ordinary Differential Equations</h3>
-                    <p class="text-sm text-slate-400 mb-4">MAT030104 | 1st & 2nd Order ODE</p>
-                    <a href="#" class="block text-center py-2 rounded-lg bg-green-500/20 text-green-400 hover:bg-green-500 hover:text-white transition text-sm font-bold">Download PDF</a>
-                </div>
-            </div>
-        </section>
-
-        <section id="view-common" class="view-section">
-            <div class="flex items-center gap-4 mb-8">
-                <div onclick="showNotesHub()" class="back-btn text-slate-400"><i class="fas fa-arrow-left"></i> Back</div>
-                <h2 class="text-3xl font-bold text-purple-400">Common Courses</h2>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                
-                <div>
-                    <h3 class="text-purple-300 font-bold mb-4 uppercase tracking-widest text-sm border-b border-purple-500/30 pb-2">AEC (Ability Enhancement)</h3>
-                    <div class="space-y-4">
-                        <div class="glass-card p-4 rounded-xl">
-                            <h4 class="font-bold">English Communication</h4>
-                            <p class="text-xs text-slate-500 mb-2">Semester I</p>
-                            <a href="#" class="text-purple-400 text-xs font-bold hover:text-white"><i class="fas fa-download"></i> Download</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div>
-                    <h3 class="text-purple-300 font-bold mb-4 uppercase tracking-widest text-sm border-b border-purple-500/30 pb-2">VAC (Value Added)</h3>
-                    <div class="space-y-4">
-                        <div class="glass-card p-4 rounded-xl">
-                            <h4 class="font-bold">Environmental Science</h4>
-                            <p class="text-xs text-slate-500 mb-2">Semester I</p>
-                            <a href="#" class="text-purple-400 text-xs font-bold hover:text-white"><i class="fas fa-download"></i> Download</a>
-                        </div>
-                        <div class="glass-card p-4 rounded-xl">
-                            <h4 class="font-bold">Digital Fluency</h4>
-                            <p class="text-xs text-slate-500 mb-2">Semester II</p>
-                            <a href="#" class="text-purple-400 text-xs font-bold hover:text-white"><i class="fas fa-download"></i> Download</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div>
-                    <h3 class="text-purple-300 font-bold mb-4 uppercase tracking-widest text-sm border-b border-purple-500/30 pb-2">MDC (Multidisciplinary)</h3>
-                    <div class="space-y-4">
-                        <div class="glass-card p-4 rounded-xl">
-                            <h4 class="font-bold">Intro to Humanities</h4>
-                            <p class="text-xs text-slate-500 mb-2">Semester I</p>
-                            <a href="#" class="text-purple-400 text-xs font-bold hover:text-white"><i class="fas fa-download"></i> Download</a>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-    </main>
-
-    <footer class="bg-black/50 border-t border-white/5 py-10 text-center">
-        <p class="text-slate-500 text-sm">Designed for GU Students | &copy; 2025</p>
-    </footer>
-
-    <script>
-        function hideAll() {
-            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
-        }
-
-        function goHome() {
-            hideAll();
-            document.getElementById('view-home').classList.add('active');
-            window.scrollTo(0,0);
-        }
-
-        function showNotesHub() {
-            hideAll();
-            document.getElementById('view-hub').classList.add('active');
-            window.scrollTo(0,0);
-        }
-
-        function openStream(type) {
-            hideAll();
-            if(type === 'physics') document.getElementById('view-physics').classList.add('active');
-            if(type === 'math') document.getElementById('view-math').classList.add('active');
-            if(type === 'common') document.getElementById('view-common').classList.add('active');
-            window.scrollTo(0,0);
-        }
-
-        function showSyllabus() {
-            alert("Upload your syllabus PDF link here in the code!");
-        }
-    </script>
 </body>
 </html>
