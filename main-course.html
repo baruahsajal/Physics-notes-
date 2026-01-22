@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Course Structure - Physics & Math</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        /* --- FUTURISTIC THEME --- */
+        :root {
+            --bg-color: #0a0a0f;
+            --text-primary: #e0e0e0;
+            --accent-cyan: #00f3ff;
+            --accent-green: #00ff9d;
+            --accent-purple: #bd00ff;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border-glass: 1px solid rgba(0, 243, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            margin: 0; padding-top: 80px;
+        }
+
+        /* Nav */
+        nav { background: rgba(10, 10, 15, 0.95); position: fixed; top: 0; width: 100%; z-index: 1000; border-bottom: 2px solid var(--accent-cyan); padding: 10px 0; backdrop-filter: blur(10px); }
+        nav ul { display: flex; justify-content: center; list-style: none; gap: 15px; padding: 0; flex-wrap: wrap; }
+        nav a { color: var(--accent-cyan); text-decoration: none; font-weight: 600; padding: 8px 15px; border-radius: 20px; font-family: 'Orbitron'; transition: 0.3s; font-size: 0.9rem; }
+        nav a:hover { background: rgba(0, 243, 255, 0.1); box-shadow: 0 0 10px var(--accent-cyan); }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+
+        /* --- TABS SYSTEM --- */
+        .tab-container { display: flex; justify-content: center; gap: 20px; margin-bottom: 40px; }
+        
+        .tab-btn {
+            background: transparent;
+            border: 1px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+            padding: 12px 30px;
+            font-size: 1.2rem;
+            font-family: 'Orbitron';
+            cursor: pointer;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        .tab-btn:hover { background: rgba(0, 243, 255, 0.1); }
+        
+        .tab-btn.active {
+            background: var(--accent-cyan);
+            color: #000;
+            box-shadow: 0 0 20px var(--accent-cyan);
+            font-weight: bold;
+        }
+
+        .content-section { display: none; animation: fadeIn 0.5s; }
+        .content-section.active-content { display: block; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- ACCORDION SYSTEM --- */
+        /* Level 1: Semester */
+        .semester-block {
+            background: rgba(19, 19, 31, 0.6);
+            border: var(--border-glass);
+            border-radius: 12px; margin-bottom: 20px;
+            overflow: hidden;
+        }
+        .sem-summary {
+            padding: 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+            font-family: 'Orbitron'; font-size: 1.3rem; color: white;
+            background: linear-gradient(90deg, rgba(0,243,255,0.05), transparent);
+            list-style: none; transition: 0.3s;
+        }
+        .sem-summary:hover { background: rgba(0, 243, 255, 0.1); }
+
+        /* Level 2: Subject */
+        .subject-list { padding: 15px; }
+        .subject-block { margin-bottom: 10px; border-left: 3px solid var(--accent-purple); background: rgba(255,255,255,0.02); border-radius: 0 8px 8px 0; }
+        .subj-summary {
+            padding: 15px; cursor: pointer; color: var(--accent-purple); font-weight: bold; font-size: 1.1rem; list-style: none;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .subj-summary:hover { color: white; }
+        
+        /* Level 3: Units */
+        .unit-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; padding: 15px; }
+        .unit-card { background: #15151e; padding: 15px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.05); transition: 0.3s; }
+        .unit-card:hover { transform: translateY(-3px); border-color: var(--accent-green); }
+        .unit-title { color: var(--accent-green); margin-bottom: 8px; font-weight: 600; font-family: 'Orbitron'; font-size: 0.95rem; }
+        .unit-desc { font-size: 0.85rem; color: #aaa; margin-bottom: 15px; line-height: 1.4; }
+
+        /* Buttons */
+        .btn-group { display: flex; gap: 10px; margin-top: auto; }
+        .btn { flex: 1; padding: 8px; text-align: center; border-radius: 4px; text-decoration: none; font-size: 0.8rem; font-weight: bold; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 5px; }
+        
+        .btn-pdf { border: 1px solid var(--accent-cyan); color: var(--accent-cyan); }
+        .btn-pdf:hover { background: var(--accent-cyan); color: black; box-shadow: 0 0 10px var(--accent-cyan); }
+        
+        .btn-note { border: 1px solid var(--accent-green); color: var(--accent-green); }
+        .btn-note:hover { background: var(--accent-green); color: black; box-shadow: 0 0 10px var(--accent-green); }
+
+        /* Icons */
+        details[open] > summary .fa-chevron-down { transform: rotate(180deg); }
+        .fa-chevron-down { transition: 0.3s; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <ul>
+            <li><a href="index.html">🏠 Home</a></li>
+            <li><a href="main-course.html" style="background: rgba(0, 243, 255, 0.2);">⚛️ Main Course</a></li>
+            <li><a href="common-course.html">📘 Common Course</a></li>
+            <li><a href="pyq.html">📝 PYQ</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        
+        <div class="tab-container">
+            <button class="tab-btn active" onclick="openTab('physics')"><i class="fas fa-atom"></i> PHYSICS</button>
+            <button class="tab-btn" onclick="openTab('math')"><i class="fas fa-calculator"></i> MATHEMATICS</button>
+        </div>
+
+        <div id="physics" class="content-section active-content">
+            
+            <details class="semester-block">
+                <summary class="sem-summary">Semester 01 <i class="fas fa-chevron-down"></i></summary>
+                <div class="subject-list">
+                    <details class="subject-block">
+                        <summary class="subj-summary">PHY0100104: Mathematical Physics & Mechanics</summary>
+                        <div class="unit-grid">
+                            <div class="unit-card">
+                                <div class="unit-title">Unit I: Vector Calculus</div>
+                                [span_0](start_span)<div class="unit-desc">Scalar/Vector fields, Gradient, Divergence, Curl, Line/Surface/Volume integrals, Gauss & Stokes theorems.[span_0](end_span)</div>
+                                <div class="btn-group"><a href="#" class="btn btn-pdf"><i class="fas fa-download"></i> PDF</a><a href="#" class="btn btn-note"><i class="fas fa-pen"></i> Notes</a></div>
+                            </div>
+                            <div class="unit-card">
+                                <div class="unit-title">Unit II: Curvilinear Coordinates</div>
+                                [span_1](start_span)<div class="unit-desc">Orthogonal coordinates, Spherical & Cylindrical systems, Transformations.[span_1](end_span)</div>
+                                <div class="btn-group"><a href="#" class="btn btn-pdf">PDF</a></div>
+                            </div>
+                            <div class="unit-card">
+                                <div class="unit-title">Part B: Mechanics Units</div>
+                                [span_2](start_span)<div class="unit-desc">Reference frames, Central force, Conservation laws, Rigid body dynamics, Oscillations.[span_2](end_span)</div>
+                                <div class="btn-group"><a href="#" class="btn btn-pdf">PDF</a></div>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </details>
+
+            <details class="semester-block">
+                <summary class="sem-summary">Semester 02 <i class="fas fa-chevron-down"></i></summary>
+                <div class="subject-list">
+                    <details class="subject-block">
+                        <summary class="subj-summary">PHY0200104: Math Physics & Electricity</summary>
+                        <div class="unit-grid">
+                            <div class="unit-card">
+                                <div class="unit-title">Unit I: Differential Equations</div>
+                                [span_3](start_span)<div class="unit-desc">1st & 2nd order ODEs, Homogeneous/Inhomogeneous solutions.[span_3](end_span)</div>
+                                <div class="btn-group"><a href="#" class="btn btn-pdf">PDF</a></div>
+                            </div>
+                            <div class="unit-card">
+                                <div class="unit-title">Unit I (Part B): Electric Field</div>
+                                [span_4](start_span)<div class="unit-desc">Gauss's Law, Potential, Laplace & Poisson equations, Capacitors.[span_4](end_span)</div>
+                                <div class="btn-group"><a href="#" class="btn btn-pdf">PDF</a></div>
+                            </div>
+                            <div class="unit-card">
+                                <div class="unit-title">Unit III: Magnetic Field</div>
+                                [span_5](start_span)<div class="unit-desc">Biot-Savart law, Ampere's law, Solenoids, Toroids.[span_5](end_span)</div>
+                                <div class="btn-group"><a href="#" class="btn btn-pdf">PDF</a></div>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </details>
+
+            <details class="semester-block">
+                <summary class="sem-summary">Semester 03 <i class="fas fa-chevron-down"></i></summary>
+                <div class="subject-list">
+                    <details class="subject-block">
+                        <summary class="subj-summary">PHY0300104: Waves & Optics</summary>
+                        <div class="unit-grid">
+                            <div class="unit-card">
+                                <div class="unit-title">Unit I: Superposition</div>
+                                [span_6](start_span)<div class="unit-desc">Linearity, Lissajous figures, Beats.[span_6](end_span)</div>
+                                <div class="btn-group"><a href="#" class="btn btn-pdf">PDF</a></div>
+                            </div>
+                            <div class="unit-card">
+                                <div class="unit-title">Unit V: Wave Optics</div>
+                                [span_7](start_span)<div class="unit-desc">Huygens principle, Temporal/Spatial coherence.[span_7](end_span)</div>
+                                <div class="btn-group"><a href="#" class="btn btn-pdf">PDF</a></div>
+                            </div>
+                            <div class="unit-card">
+                                <div class="unit-title">Unit VI: Interference</div>
+                                [span_8](start_span)<div class="unit-desc">Young's double slit, Newton's Rings, Michelson interferometer.[span_8](end_span)</div>
+                                <div class="btn-group"><a href="#" class="btn btn-pdf">PDF</a></div>
+                            </div>
+                        </div>
+                    </details>
+                    <details class="subject-block">
+                        <summary class="subj-summary">PHY0300204: Electromagnetic Theory</summary>
+                        <div class="unit-grid">
+                            <div class="unit-card">
+                                <div class="unit-title">Unit I: Maxwell's Equations</div>
+                                [span_9](start_span)<div class="unit-desc">Displacement current, Gauge transformations, Poynting vector.[span_9](end_span)</div>
+                                <div class="btn-group"><a href="#" class="btn btn-pdf">PDF</a></div>
+                            </div>
+                            <div class="unit-card">
+                                <div class="unit-title">Unit II: EM Wave Propagation</div>
+                                [span_10](start_span)<div class="unit-desc">Propagation in Dielectrics & Conductors, Skin depth.[span_10](end_span)</div>
+                                <div class="btn-group"><a href="#" class="btn btn-pdf">PDF</a></div>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </details>
+
+            <details class="semester-block">
+                <summary class="sem-summary">Semester 04 <i class="fas fa-chevron-down"></i></summary>
+                <div class="subject-list">
+                    <details class="subject-block">
+                        <summary class="subj-summary">PHY0400104: Classical Mechanics</summary>
+                        <div class="unit-grid">
+                            <div class="unit-card">
+                                <div class="unit-title">Unit I: Lagrangian Approach</div>
+                                [span_11](start_span)<div class="unit-desc">Generalized coordinates, D'Alembert's principle, Euler-Lagrange eq.[span_11](end_span)</div>
+                                <div class="btn-group"><a href="#" class="btn btn-pdf">PDF</a></div>
+                            </div>
+                            <div class="unit-card">
+                                <div class="unit-title">Unit IV: Special Relativity</div>
+                                [span_12](start_span)<div class="unit-desc">Lorentz transformation, Length contraction, Time dilation.[span_12](end_span)</div>
+                                <div class="btn-group"><a href="#" class="btn btn-pdf">PDF</a></div>
+                            </div>
+                        </div>
+                    </details>
+                    <details class="subject-block">
+                        <summary class="subj-summary">PHY0400204: Quantum Mechanics I</summary>
+                        <div class="unit-grid">
+                            <div class="unit-card">
+                                <div class="unit-title">Unit II: Operators</div>
+                                [span_13](start_span)<div class="unit-desc">Position/Momentum operators, Commutation, Eigenvalues.[span_13](end_span)</div>
+                                <div class="btn-group"><a href="#" class="btn btn-pdf">PDF</a></div>
+                            </div>
+                            <div class="unit-card">
+                                <div class="unit-title">Unit IV: Schrödinger Equation</div>
+                                [span_14](start_span)<div class="unit-desc">Time dependent/independent eq, Particle in a box, Harmonic oscillator.[span_14](end_span)</div>
+                                <div class="btn-group"><a href="#" class="btn btn-pdf">PDF</a></div>
+                            </div>
+                        </div>
+                    </details>
+                    <details class="subject-block">
+                        <summary class="subj-summary">PHY0400304: Analog Electronics</summary>
+                        <div class="unit-grid">
+                            <div class="unit-card">
+                                <div class="unit-title">Unit I: Diodes</div>
+                                [span_15](start_span)<div class="unit-desc">PN Junction, Rectifiers, Zener Diode, LED, Solar Cell.[span_15](end_span)</div>
+                                <div class="btn-group"><a href="#" class="btn btn-pdf">PDF</a></div>
+                            </div>
+                            <div class="unit-card">
+                                <div class="unit-title">Unit VIII: Op-Amps</div>
+                                [span_16](start_span)<div class="unit-desc">IC 741 characteristics, Virtual ground, Slew rate.[span_16](end_span)</div>
+                                <div class="btn-group"><a href="#" class="btn btn-pdf">PDF</a></div>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </details>
+
+            <details class="semester-block">
+                <summary class="sem-summary">Semester 05 <i class="fas fa-chevron-down"></i></summary>
+                <div class="subject-list">
+                    <details class="subject-block">
+                        <summary class="subj-summary">PHY0500104: Atomic & Molecular Physics</summary>
+                        <div class="unit-grid">
+                            <div class="unit-card">
+                                <div class="unit-title">Unit I: Atom Model</div>
+                                [span_17](start_span)<div class="unit-desc">Bohr model, Sommerfeld model, Zeeman Effect, Paschen Back effect.[span_17](end_span)</div>
+                                <div class="btn-group"><a href="#" class="btn btn-pdf">PDF</a></div>
+                            </div>
+                            <div class="unit-card">
+                                <div class="unit-title">Unit IV: Molecular Spectra</div>
+                                [span_18](start_span)<div class="unit-desc">Rotational/Vibrational spectra of diatomic molecules.[span_18](end_span)</div>
+                                <div class="btn-group"><a href="#" class="btn btn-pdf">PDF</a></div>
+                            </div>
+                        </div>
+                    </details>
+                    <details class="subject-block">
+                        <summary class="subj-summary">PHY0500204: Condensed Matter Physics</summary>
+                        <div class="unit-grid">
+                            <div class="unit-card">
+                                <div class="unit-title">Unit I: Crystal Structure</div>
+                                [span_19](start_span)<div class="unit-desc">Bravais Lattice, Miller Indices, Bonding in solids.[span_19](end_span)</div>
+                                <div class="btn-group"><a href="#" class="btn btn-pdf">PDF</a></div>
+                            </div>
+                            <div class="unit-card">
+                                <div class="unit-title">Unit VII: Superconductivity</div>
+                                [span_20](start_span)<div class="unit-desc">Meissner effect, Type I & II superconductors.[span_20](end_span)</div>
+                                <div class="btn-group"><a href="#" class="btn btn-pdf">PDF</a></div>
+                            </div>
+                        </div>
+                    </details>
+                    <details class="subject-block">
+                        <summary class="subj-s
+<summary class="subj-summary">PHY0500304: Heat & Thermodynamics</summary>
+                        <div class="unit-grid">
+                            <div class="unit-card">
+                                <div class="unit-title">Unit III: Laws of Thermodynamics</div>
+                                [span_21](start_span)<div class="unit-desc">Zeroth, First & Second laws, Carnot Cycle, Entropy.[span_21](end_span)</div>
+                                <div class="btn-group"><a href="#" class="btn btn-pdf">PDF</a></div>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </details>
+
+            <details class="semester-block">
+                <summary class="sem-summary">Semester 06 <i class="fas fa-chevron-down"></i></summary>
+                <div class="subject-list">
+                    <details class="subject-block">
+                        <summary class="subj-summary">PHY0600104: Nuclear & Particle Physics</summary>
+                        <div class="unit-grid">
+                            <div class="unit-card">
+                                <div class="unit-title">Unit I: Nuclei Properties</div>
+                                [span_22](start_span)<div class="unit-desc">Binding energy, Stability, Radioactivity laws.[span_22](end_span)</div>
+                                <div class="btn-group"><a href="#" class="btn btn-pdf">PDF</a></div>
+                            </div>
+                            <div class="unit-card">
+                                <div class="unit-title">Unit V: Elementary Particles</div>
+                                [span_23](start_span)<div class="unit-desc">Quarks, Leptons, Conservation laws, Standard model.[span_23](end_span)</div>
+                                <div class="btn-group"><a href="#" class="btn btn-pdf">PDF</a></div>
+                            </div>
+                        </div>
+                    </details>
+                    <details class="subject-block">
+                        <summary class="subj-summary">PHY0600204: Digital Electronics</summary>
+                        <div class="unit-grid">
+                            <div class="unit-card">
+                                <div class="unit-title">Unit II: Digital Circuits</div>
+                                [span_24](start_span)<div class="unit-desc">Binary systems, Logic Gates (AND, OR, NAND, NOR), Boolean Algebra.[span_24](end_span)</div>
+                                <div class="btn-group"><a href="#" class="btn btn-pdf">PDF</a></div>
+                            </div>
+                        </div>
+                    </details>
+                    <details class="subject-block">
+                        <summary class="subj-summary">PHY0600304: Astronomy & Astrophysics</summary>
+                        <div class="unit-grid">
+                            <div class="unit-card">
+                                <div class="unit-title">Unit III: Stellar Astrophysics</div>
+                                [span_25](start_span)<div class="unit-desc">Star formation, HR diagram, Stellar evolution.[span_25](end_span)</div>
+                                <div class="btn-group"><a href="#" class="btn btn-pdf">PDF</a></div>
+                            </div>
+                        </div>
+                    </details>
+                    <details class="subject-block">
+                        <summary class="subj-summary">PHY0600404: Statistical Mechanics</summary>
+                        <div class="unit-grid">
+                            <div class="unit-card">
+                                <div class="unit-title">Unit I: Classical Statistics</div>
+                                [span_26](start_span)<div class="unit-desc">Maxwell-Boltzmann distribution, Phase space, Partition function.[span_26](end_span)</div>
+                                <div class="btn-group"><a href="#" class="btn btn-pdf">PDF</a></div>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </details>
+        </div>
+
+        <div id="math" class="content-section">
+            
+            <details class="semester-block">
+                <summary class="sem-summary">Semester 01 <i class="fas fa-chevron-down"></i></summary>
+                <div class="subject-list">
+                    <details class="subject-block">
+                        <summary class="subj-summary">MAT010104: Classical Algebra</summary>
+                        <div class="unit-grid">
+                            <div class="unit-card">
+                                <div class="unit-title">Unit 1: Complex Numbers</div>
+                                [span_27](start_span)<div class="unit-desc">De Moivre's theorem, Exponential/Logarithmic functions.[span_27](end_span)</div>
+                                <div class="btn-group"><a href="#" class="btn btn-pdf">PDF</a></div>
+                            </div>
+                            <div class="unit-card">
+                                <div class="unit-title">Unit 3: Matrix Algebra</div>
+                                [span_28](start_span)<div class="unit-desc">Rank, Row Echelon form, Consistency of linear systems.[span_28](end_span)</div>
+                                <div class="btn-group"><a href="#" class="btn btn-pdf">PDF</a></div>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </details>
+
+            <details class="semester-block">
+                <summary class="sem-summary">Semester 02 <i class="fas fa-chevron-down"></i></summary>
+                <div class="subject-list">
+                    <details class="subject-block">
+                        <summary class="subj-summary">MAT020104: Calculus</summary>
+                        <div class="unit-grid">
+                            <div class="unit-card">
+                                <div class="unit-title">Unit 2: Differentiation</div>
+                                [span_29](start_span)<div class="unit-desc">Leibnitz theorem, Reduction formulae for integrals.[span_29](end_span)</div>
+                                <div class="btn-group"><a href="#" class="btn btn-pdf">PDF</a></div>
+                            </div>
+                            <div class="unit-card">
+                                <div class="unit-title">Unit 3: Mean Value Theorems</div>
+                                [span_30](start_span)<div class="unit-desc">Rolle's & Lagrange's theorems, Taylor series.[span_30](end_span)</div>
+                                <div class="btn-group"><a href="#" class="btn btn-pdf">PDF</a></div>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </details>
+
+            <details class="semester-block">
+                <summary class="sem-summary">Semester 03 <i class="fas fa-chevron-down"></i></summary>
+                <div class="subject-list">
+                    <details class="subject-block">
+                        <summary class="subj-summary">MAT030104: Ordinary Differential Equations</summary>
+                        <div class="unit-grid">
+                            <div class="unit-card">
+                                <div class="unit-title">Unit 1: First Order ODE</div>
+                                [span_31](start_span)<div class="unit-desc">Exact equations, Integrating factors, Bernoulli equations.[span_31](end_span)</div>
+                                <div class="btn-group"><a href="#" class="btn btn-pdf">PDF</a></div>
+                            </div>
+                            <div class="unit-card">
+                                <div class="unit-title">Unit 2: Second Order ODE</div>
+                                [span_32](start_span)<div class="unit-desc">Linear homogenous equations, Variation of Parameters.[span_32](end_span)</div>
+                                <div class="btn-group"><a href="#" class="btn btn-pdf">PDF</a></div>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </details>
+
+            <details class="semester-block">
+                <summary class="sem-summary">Semester 04 <i class="fas fa-chevron-down"></i></summary>
+                <div class="subject-list">
+                    <details class="subject-block">
+                        <summary class="subj-summary">MAT040104: Real Analysis</summary>
+                        <div class="unit-grid">
+                            <div class="unit-card">
+                                <div class="unit-title">Unit 1: Properties of R</div>
+                                [span_33](start_span)<div class="unit-desc">Supremum, Infimum, Completeness property, Nested intervals.[span_33](end_span)</div>
+                                <div class="btn-group"><a href="#" class="btn btn-pdf">PDF</a></div>
+                            </div>
+                        </div>
+                    </details>
+                    <details class="subject-block">
+                        <summary class="subj-summary">MAT040204: Complex Analysis-I</summary>
+                        <div class="unit-grid">
+                            <div class="unit-card">
+                                <div class="unit-title">Unit 2: Analytic Functions</div>
+                                [span_34](start_span)<div class="unit-desc">Cauchy-Riemann equations, Harmonic functions.[span_34](end_span)</div>
+                                <div class="btn-group"><a href="#" class="btn btn-pdf">PDF</a></div>
+                            </div>
+                        </div>
+                    </details>
+                    <details class="subject-block">
+                        <summary class="subj-summary">MAT040304: Analytical Geometry</summary>
+                        <div class="unit-grid">
+                            <div class="unit-card">
+                                <div class="unit-title">Unit 3: Quadric Surfaces</div>
+                                [span_35](start_span)<div class="unit-desc">Sphere, Cylinder, Cone, Polar coordinates.[span_35](end_span)</div>
+                                <div class="btn-group"><a href="#" class="btn btn-pdf">PDF</a></div>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </details>
+
+            <details class="semester-block">
+                <summary class="sem-summary">Semester 05 <i class="fas fa-chevron-down"></i></summary>
+                <div class="subject-list">
+                    <details class="subject-block">
+                        <summary class="subj-summary">MAT050104: Abstract Algebra</summary>
+                        <div class="unit-grid">
+                            <div class="unit-card">
+                                <div class="unit-title">Unit 1: Groups</div>
+                                [span_36](start_span)<div class="unit-desc">Subgroups, Cyclic groups, Cosets, Lagrange's Theorem.[span_36](end_span)</div>
+                                <div class="btn-group"><a href="#" class="btn btn-pdf">PDF</a></div>
+                            </div>
+                            <div class="unit-card">
+                                <div class="unit-title">Unit 4: Rings</div>
+                                [span_37](start_span)<div class="unit-desc">Ideals, Integral domains, Fields.[span_37](end_span)</div>
+                                <div class="btn-group"><a href="#" class="btn btn-pdf">PDF</a></div>
+                            </div>
+                        </div>
+                    </details>
+                    <details class="subject-block">
+                        <summary class="subj-summary">MAT050204: Multivariate Calculus</summary>
+                        <div class="unit-grid">
+                            <div class="unit-card">
+                                <div class="unit-title">Unit 4: Vector Calculus</div>
+                                [span_38](start_span)<div class="unit-desc">Green's theorem, Stokes' theorem, Gauss divergence theorem.[span_38](end_span)</div>
+                                <div class="btn-group"><a href="#" class="btn btn-pdf">PDF</a></div>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </details>
+
+            <details class="semester-block">
+                <summary class="sem-summary">Semester 06 <i class="fas fa-chevron-down"></i></summary>
+                <div class="subject-list">
+                    <details class="subject-block">
+                        <summary class="subj-summary">MAT060104: Linear Algebra</summary>
+                        <div class="unit-grid">
+                            <div class="unit-card">
+                                <div class="unit-title">Unit 1: Vector Spaces</div>
+                                [span_39](start_span)<div class="unit-desc">Subspaces, Linear transformation, Kernel, Range.[span_39](end_span)</div>
+                                <div class="btn-group"><a href="#" class="btn btn-pdf">PDF</a></div>
+                            </div>
+                            <div class="unit-card">
+                                <div class="unit-title">Unit 3: Eigenvalues</div>
+                                [span_40](start_span)<div class="unit-desc">Characteristic equation, Diagonalization, Cayley-Hamilton.[span_40](end_span)</div>
+                                <div class="btn-group"><a href="#" class="btn btn-pdf">PDF</a></div>
+                            </div>
+                        </div>
+                    </details>
+                    <details class="subject-block">
+                        <summary class="subj-summary">MAT060204: Partial Differential Equations</summary>
+                        <div class="unit-grid">
+                            <div class="unit-card">
+                                <div class="unit-title">Unit 1: First Order PDE</div>
+                                [span_41](start_span)<div class="unit-desc">Cauchy's problem, Charpit's method, Jacobi's method.[span_41](end_span)</div>
+                                <div class="btn-group"><a href="#" class="btn btn-pdf">PDF</a></div>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </details>
+
+        </div> </div>
+
+    <script>
+        function openTab(tabName) {
+            var contents = document.getElementsByClassName("content-section");
+            for (var i = 0; i < contents.length; i++) {
+                contents[i].classList.remove("active-content");
+            }
+            var buttons = document.getElementsByClassName("tab-btn");
+            for (var i = 0; i < buttons.length; i++) {
+                buttons[i].classList.remove("active");
+            }
+            document.getElementById(tabName).classList.add("active-content");
+            event.currentTarget.classList.add("active");
+        }
+    </script>
+</body>
+</html>
