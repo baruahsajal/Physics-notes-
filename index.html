@@ -3,316 +3,343 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Academic Nexus | FYUGP Portal</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;500;600;700&display=swap" rel="stylesheet">
+    <title>QUANTUM PORTAL | FYUGP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* --- FUTURISTIC VISUAL AESTHETIC --- */
+        /* --- CORE SETTINGS --- */
         :root {
-            --bg-deep: #050507;
-            --bg-panel: rgba(20, 20, 30, 0.6);
-            --accent-cyan: #00f3ff;
-            --accent-purple: #bc13fe;
-            --accent-gold: #ffd700;
-            --text-main: #e0e0e0;
-            --text-dim: #8a8a9b;
-            --glass-border: 1px solid rgba(255, 255, 255, 0.08);
-            --neon-glow: 0 0 10px rgba(0, 243, 255, 0.5);
+            --bg-void: #030305;
+            --neon-blue: #00f3ff;
+            --neon-purple: #bc13fe;
+            --neon-green: #00ff9d;
+            --neon-red: #ff0055;
+            --glass: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.1);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; /* Custom Cursor */ }
 
         body {
-            background-color: var(--bg-deep);
-            color: var(--text-main);
+            background-color: var(--bg-void);
+            color: white;
             font-family: 'Rajdhani', sans-serif;
             overflow-x: hidden;
-            line-height: 1.6;
-        }
-
-        /* --- BACKGROUND ANIMATION --- */
-        .bg-grid {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
-            background-image: 
-                linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
-            background-size: 40px 40px;
-            background-position: center;
-            mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
-        }
-
-        /* --- NAVIGATION --- */
-        nav {
-            position: fixed; top: 0; width: 100%; z-index: 1000;
-            padding: 15px 40px;
-            display: flex; justify-content: space-between; align-items: center;
-            backdrop-filter: blur(15px);
-            background: rgba(5, 5, 7, 0.7);
-            border-bottom: 1px solid rgba(0, 243, 255, 0.1);
-        }
-
-        .logo {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 900;
-            color: white;
-            letter-spacing: 2px;
-            text-shadow: var(--neon-glow);
-        }
-
-        .nav-links { list-style: none; display: flex; gap: 30px; }
-        .nav-links a {
-            text-decoration: none; color: var(--text-main); font-weight: 600;
-            font-size: 1rem; transition: 0.3s; position: relative;
-            text-transform: uppercase; letter-spacing: 1px;
-        }
-        .nav-links a:hover { color: var(--accent-cyan); text-shadow: 0 0 8px var(--accent-cyan); }
-        .nav-links a::after {
-            content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px;
-            background: var(--accent-cyan); transition: 0.3s;
-        }
-        .nav-links a:hover::after { width: 100%; }
-
-        /* --- HERO SECTION --- */
-        .hero {
             height: 100vh;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            text-align: center; padding: 20px;
-            position: relative;
         }
 
-        .hero::before {
-            content: ''; position: absolute; width: 300px; height: 300px;
-            background: radial-gradient(circle, rgba(188, 19, 254, 0.2), transparent 70%);
-            top: 20%; left: 20%; filter: blur(50px); animation: float 6s infinite ease-in-out;
+        /* --- CUSTOM CURSOR --- */
+        .cursor-dot, .cursor-outline {
+            position: fixed; top: 0; left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%; z-index: 9999; pointer-events: none;
         }
-        .hero::after {
-            content: ''; position: absolute; width: 400px; height: 400px;
-            background: radial-gradient(circle, rgba(0, 243, 255, 0.15), transparent 70%);
-            bottom: 10%; right: 20%; filter: blur(50px); animation: float 8s infinite ease-in-out reverse;
+        .cursor-dot { width: 8px; height: 8px; background: white; }
+        .cursor-outline {
+            width: 40px; height: 40px;
+            border: 1px solid var(--neon-blue);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
         }
 
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+        /* --- CANVAS BACKGROUND --- */
+        canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
 
-        .hero h1 {
+        /* --- UI LAYOUT --- */
+        .main-wrapper {
+            position: relative; z-index: 10;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            min-height: 100vh; padding: 20px;
+        }
+
+        /* --- GLITCH TITLE --- */
+        .glitch-wrapper { text-align: center; margin-bottom: 60px; }
+        .glitch {
             font-family: 'Orbitron', sans-serif;
-            font-size: 4.5rem;
-            line-height: 1.1;
-            background: linear-gradient(to right, #fff, var(--accent-cyan));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 20px;
-            z-index: 1;
+            font-size: 5rem; font-weight: 900;
+            position: relative; color: white;
+            text-shadow: 0 0 20px var(--neon-blue);
+        }
+        .glitch::before, .glitch::after {
+            content: attr(data-text); position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%; opacity: 0.8;
+        }
+        .glitch::before {
+            color: var(--neon-purple); z-index: -1; clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+            animation: glitch-anim-1 2.5s infinite linear alternate-reverse;
+        }
+        .glitch::after {
+            color: var(--neon-green); z-index: -2; clip-path: polygon(0 60%, 100% 60%, 100% 100%, 0 100%);
+            animation: glitch-anim-2 3s infinite linear alternate-reverse;
+        }
+        .subtitle {
+            font-size: 1.5rem; letter-spacing: 5px; color: var(--neon-blue);
+            text-transform: uppercase; margin-top: 10px;
         }
 
-        .hero p {
-            font-size: 1.4rem; color: var(--text-dim); max-width: 700px; margin-bottom: 40px;
-            z-index: 1;
+        @keyframes glitch-anim-1 { 0% { transform: translate(0); } 20% { transform: translate(-2px, 2px); } 40% { transform: translate(-2px, -2px); } 60% { transform: translate(2px, 2px); } 80% { transform: translate(2px, -2px); } 100% { transform: translate(0); } }
+        @keyframes glitch-anim-2 { 0% { transform: translate(0); } 20% { transform: translate(2px, -2px); } 40% { transform: translate(2px, 2px); } 60% { transform: translate(-2px, -2px); } 80% { transform: translate(-2px, 2px); } 100% { transform: translate(0); } }
+
+        /* --- 3D TILT CARDS CONTAINER --- */
+        .portal-grid {
+            display: flex; gap: 40px; flex-wrap: wrap; justify-content: center;
+            perspective: 1000px; /* Essential for 3D effect */
         }
 
-        .cta-btn {
-            padding: 15px 40px;
-            background: transparent;
-            color: var(--accent-cyan);
-            border: 1px solid var(--accent-cyan);
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.1rem;
-            text-decoration: none;
-            position: relative;
-            overflow: hidden;
-            transition: 0.3s;
-            z-index: 1;
-            clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%);
-        }
-
-        .cta-btn:hover {
-            background: var(--accent-cyan);
-            color: black;
-            box-shadow: 0 0 30px rgba(0, 243, 255, 0.4);
-        }
-
-        /* --- DASHBOARD GRID --- */
-        .dashboard {
-            max-width: 1400px; margin: 0 auto; padding: 100px 20px;
-        }
-
-        .section-title {
-            font-family: 'Orbitron'; font-size: 2.5rem; color: white; margin-bottom: 50px;
-            border-left: 5px solid var(--accent-purple); padding-left: 20px;
-        }
-
-        .card-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 30px;
-        }
-
-        .card {
-            background: var(--bg-panel);
+        /* --- THE CARD --- */
+        .holo-card {
+            width: 300px; height: 420px;
+            background: rgba(20, 20, 30, 0.4);
             backdrop-filter: blur(10px);
-            border: var(--glass-border);
-            padding: 40px 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 20px;
-            transition: 0.4s;
+            padding: 30px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center;
             position: relative;
+            transform-style: preserve-3d; /* Key for 3D children */
+            transition: transform 0.1s ease; /* Smooth tilt */
+            text-decoration: none;
             overflow: hidden;
-            display: flex; flex-direction: column; justify-content: space-between;
-            height: 100%;
         }
 
-        .card:hover {
-            transform: translateY(-10px);
-            border-color: var(--accent-cyan);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-        }
+        /* Card Hover Effects */
+        .holo-card:hover { border-color: var(--card-color); box-shadow: 0 0 30px var(--card-glow); }
 
-        .card-icon {
-            font-size: 3.5rem; margin-bottom: 20px;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
-
-        .card h2 {
-            font-family: 'Orbitron'; font-size: 1.8rem; margin-bottom: 15px; color: white;
-        }
-
-        .card p { color: var(--text-dim); margin-bottom: 30px; font-size: 1.1rem; }
-
-        .card-link {
-            text-decoration: none; color: white; font-weight: bold;
-            display: flex; align-items: center; gap: 10px; transition: 0.3s;
-            margin-top: auto;
-        }
-
-        .card-link:hover { gap: 15px; color: var(--accent-cyan); }
-
-        /* Specific Card Accents */
-        .card.physics:hover { border-color: var(--accent-cyan); }
-        .card.math:hover { border-color: var(--accent-purple); }
-        .card.common:hover { border-color: var(--accent-gold); }
-
-        /* --- STATS SECTION --- */
-        .stats-bar {
-            background: rgba(255, 255, 255, 0.02);
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 60px 0;
-            margin-top: 50px;
-        }
+        /* Floating Content inside Card (Parallax) */
+        .card-content { transform: translateZ(40px); /* Pops out */ }
         
-        .stats-container {
-            display: flex; justify-content: space-around; flex-wrap: wrap;
-            max-width: 1200px; margin: 0 auto;
+        .icon-box {
+            font-size: 4rem; margin-bottom: 20px;
+            color: var(--card-color);
+            filter: drop-shadow(0 0 10px var(--card-color));
+            transition: 0.3s;
         }
 
-        .stat-item { text-align: center; margin: 20px; }
-        .stat-num { font-family: 'Orbitron'; font-size: 3rem; color: white; display: block; }
-        .stat-label { color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; }
-
-        /* --- FOOTER --- */
-        footer {
-            padding: 50px 20px; text-align: center;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            background: #020203; margin-top: 100px;
+        .card-title {
+            font-family: 'Orbitron'; font-size: 1.8rem; color: white; margin-bottom: 10px;
         }
-        .footer-text { color: var(--text-dim); font-size: 0.9rem; }
+
+        .card-desc { font-size: 1rem; color: #aaa; line-height: 1.5; }
+
+        /* Decorative Scanlines */
+        .scanline {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.5) 51%);
+            background-size: 100% 4px; pointer-events: none; opacity: 0.3;
+        }
+
+        /* Colors for specific cards */
+        .physics { --card-color: #00f3ff; --card-glow: rgba(0, 243, 255, 0.3); }
+        .math { --card-color: #bc13fe; --card-glow: rgba(188, 19, 254, 0.3); }
+        .common { --card-color: #ffd700; --card-glow: rgba(255, 215, 0, 0.3); }
+        .pyq { --card-color: #00ff9d; --card-glow: rgba(0, 255, 157, 0.3); }
+
+        /* --- FOOTER UI --- */
+        .hud-footer {
+            position: fixed; bottom: 20px; width: 100%;
+            display: flex; justify-content: space-between; padding: 0 50px;
+            font-family: 'Orbitron'; font-size: 0.8rem; color: var(--neon-blue);
+            pointer-events: none; /* Let clicks pass through */
+        }
 
         @media (max-width: 768px) {
-            .hero h1 { font-size: 2.8rem; }
-            .nav-links { display: none; } /* Mobile menu would go here */
+            .glitch { font-size: 3rem; }
+            .portal-grid { gap: 20px; }
+            .holo-card { width: 100%; height: auto; padding: 40px 20px; }
         }
     </style>
 </head>
 <body>
 
-    <div class="bg-grid"></div>
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
 
-    <nav>
-        <div class="logo">ACADEMIC<span style="color:var(--accent-cyan)">NEXUS</span></div>
-        <ul class="nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="main-course.html">Main Course</a></li>
-            <li><a href="common-course.html">Common</a></li>
-            <li><a href="pyq.html">PYQ Archive</a></li>
-        </ul>
-    </nav>
+    <canvas id="neuroCanvas"></canvas>
 
-    <section class="hero">
-        <h1>THE FUTURE OF<br>LEARNING</h1>
-        <p>A centralized digital portal for B.Sc. Physics & Mathematics (FYUGP).<br> 
-           Access structured syllabus, unit-wise notes, and research materials.</p>
-        <a href="#curriculum" class="cta-btn">ENTER PORTAL</a>
-    </section>
-
-    <section id="curriculum" class="dashboard">
-        <h2 class="section-title">Academic Pathways</h2>
+    <div class="main-wrapper">
         
-        <div class="card-grid">
+        <div class="glitch-wrapper">
+            <h1 class="glitch" data-text="ACADEMIC NEXUS">ACADEMIC NEXUS</h1>
+            <div class="subtitle">FYUGP 2025 // SYSTEM READY</div>
+        </div>
+
+        <div class="portal-grid">
             
-            <div class="card physics">
-                <i class="fas fa-atom card-icon"></i>
-                <h2>Physics Major</h2>
-                <p>Comprehensive module covering Mechanics, Quantum Physics, Thermodynamics, and Electronics across Semesters 1-6.</p>
-                <a href="main-course.html" class="card-link">Access Modules <i class="fas fa-arrow-right"></i></a>
-            </div>
+            <a href="main-course.html" class="holo-card physics" id="cardPhys">
+                <div class="scanline"></div>
+                <div class="card-content">
+                    <div class="icon-box"><i class="fas fa-atom"></i></div>
+                    <h2 class="card-title">PHYSICS</h2>
+                    <p class="card-desc">Mechanics / Quantum / Optics<br>Analyze the fundamental laws.</p>
+                </div>
+            </a>
 
-            <div class="card math">
-                <i class="fas fa-square-root-variable card-icon" style="background: linear-gradient(135deg, #bd00ff, #ff0055); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></i>
-                <h2>Mathematics Major</h2>
-                <p>Detailed curriculum for Calculus, Algebra, Differential Equations, and Statistical Mechanics.</p>
-                <a href="main-course.html" class="card-link" onclick="openMathTab()">Access Modules <i class="fas fa-arrow-right"></i></a>
-            </div>
+            <a href="main-course.html" onclick="localStorage.setItem('defaultTab', 'math')" class="holo-card math" id="cardMath">
+                <div class="scanline"></div>
+                <div class="card-content">
+                    <div class="icon-box"><i class="fas fa-cube"></i></div>
+                    <h2 class="card-title">MATH</h2>
+                    <p class="card-desc">Calculus / Algebra / Analysis<br>Decode the language of nature.</p>
+                </div>
+            </a>
 
-            <div class="card common">
-                <i class="fas fa-layer-group card-icon" style="background: linear-gradient(135deg, #ffd700, #ff8c00); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></i>
-                <h2>Common Courses</h2>
-                <p>Resources for Multi-Disciplinary (MDC), Value Added (VAC), and Ability Enhancement (AEC) courses.</p>
-                <a href="common-course.html" class="card-link">Explore Courses <i class="fas fa-arrow-right"></i></a>
-            </div>
+            <a href="common-course.html" class="holo-card common" id="cardCommon">
+                <div class="scanline"></div>
+                <div class="card-content">
+                    <div class="icon-box"><i class="fas fa-layer-group"></i></div>
+                    <h2 class="card-title">COMMON</h2>
+                    <p class="card-desc">MDC / VAC / AEC<br>Multidisciplinary Skills.</p>
+                </div>
+            </a>
 
-            <div class="card">
-                <i class="fas fa-file-contract card-icon" style="background: linear-gradient(135deg, #00ff9d, #00f3ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></i>
-                <h2>Exam Archive</h2>
-                <p>Previous Year Questions (PYQ) repository classified by Year, Semester, and Subject code.</p>
-                <a href="pyq.html" class="card-link">View Papers <i class="fas fa-arrow-right"></i></a>
-            </div>
+            <a href="pyq.html" class="holo-card pyq" id="cardPyq">
+                <div class="scanline"></div>
+                <div class="card-content">
+                    <div class="icon-box"><i class="fas fa-database"></i></div>
+                    <h2 class="card-title">ARCHIVE</h2>
+                    <p class="card-desc">PYQ / Database<br>Access historical records.</p>
+                </div>
+            </a>
 
         </div>
-    </section>
 
-    <div class="stats-bar">
-        <div class="stats-container">
-            <div class="stat-item">
-                <span class="stat-num">6</span>
-                <span class="stat-label">Semesters</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-num">30+</span>
-                <span class="stat-label">Subjects</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-num">100+</span>
-                <span class="stat-label">PDF Notes</span>
-            </div>
-        </div>
     </div>
 
-    <footer>
-        <div class="logo" style="font-size: 1.2rem; margin-bottom: 20px;">ACADEMIC<span style="color:var(--accent-cyan)">NEXUS</span></div>
-        <p class="footer-text">© 2025 Physics & Math Portal. Designed for the Future.</p>
-        <div style="margin-top: 20px;">
-            <a href="#" style="color: var(--text-dim); margin: 0 10px; font-size: 1.2rem;"><i class="fab fa-github"></i></a>
-            <a href="#" style="color: var(--text-dim); margin: 0 10px; font-size: 1.2rem;"><i class="fab fa-linkedin"></i></a>
-            <a href="mailto:email@example.com" style="color: var(--text-dim); margin: 0 10px; font-size: 1.2rem;"><i class="fas fa-envelope"></i></a>
-        </div>
-    </footer>
+    <div class="hud-footer">
+        <div>SYS.STATUS: ONLINE</div>
+        <div>LOC: GUWAHATI, IN</div>
+    </div>
 
     <script>
-        // Simple script to auto-select Math tab if coming from Math Card
-        function openMathTab() {
-            localStorage.setItem('defaultTab', 'math');
-        }
-    </script>
+        /* --- 1. CUSTOM CURSOR SCRIPT --- */
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
 
+        window.addEventListener('mousemove', (e) => {
+            const posX = e.clientX;
+            const posY = e.clientY;
+
+            // Dot follows instantly
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+
+            // Outline follows with lag (animation)
+            cursorOutline.animate({
+                left: `${posX}px`,
+                top: `${posY}px`
+            }, { duration: 500, fill: "forwards" });
+        });
+
+        /* --- 2. 3D TILT EFFECT SCRIPT --- */
+        const cards = document.querySelectorAll('.holo-card');
+
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                // Calculate center
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+
+                // Rotation calculation (Max 20deg)
+                const rotateX = ((y - centerY) / centerY) * -15;
+                const rotateY = ((x - centerX) / centerX) * 15;
+
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = `perspective(1000px) rotateX(0) rotateY(0) scale(1)`;
+            });
+        });
+
+        /* --- 3. PARTICLE CONSTELLATION BACKGROUND --- */
+        const canvas = document.getElementById('neuroCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let particlesArray;
+
+        // Create Particle
+        class Particle {
+            constructor(x, y, directionX, directionY, size, color) {
+                this.x = x; this.y = y;
+                this.directionX = directionX; this.directionY = directionY;
+                this.size = size; this.color = color;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+            }
+            update() {
+                if (this.x > canvas.width || this.x < 0) this.directionX = -this.directionX;
+                if (this.y > canvas.height || this.y < 0) this.directionY = -this.directionY;
+                this.x += this.directionX;
+                this.y += this.directionY;
+                this.draw();
+            }
+        }
+
+        // Init Particles
+        function init() {
+            particlesArray = [];
+            let numberOfParticles = (canvas.height * canvas.width) / 9000;
+            for (let i = 0; i < numberOfParticles; i++) {
+                let size = (Math.random() * 2) + 1;
+                let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
+                let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
+                let directionX = (Math.random() * 0.4) - 0.2;
+                let directionY = (Math.random() * 0.4) - 0.2;
+                let color = '#00f3ff';
+                particlesArray.push(new Particle(x, y, directionX, directionY, size, color));
+            }
+        }
+
+        // Connect Particles with lines
+        function connect() {
+            let opacityValue = 1;
+            for (let a = 0; a < particlesArray.length; a++) {
+                for (let b = a; b < particlesArray.length; b++) {
+                    let distance = ((particlesArray[a].x - particlesArray[b].x) * (particlesArray[a].x - particlesArray[b].x)) + 
+                                   ((particlesArray[a].y - particlesArray[b].y) * (particlesArray[a].y - particlesArray[b].y));
+                    if (distance < (canvas.width/7) * (canvas.height/7)) {
+                        opacityValue = 1 - (distance / 20000);
+                        ctx.strokeStyle = 'rgba(0, 243, 255,' + opacityValue + ')';
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
+                        ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            ctx.clearRect(0, 0, innerWidth, innerHeight);
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+            }
+            connect();
+        }
+
+        // Resize Event
+        window.addEventListener('resize', () => {
+            canvas.width = innerWidth;
+            canvas.height = innerHeight;
+            init();
+        });
+
+        init();
+        animate();
+    </script>
 </body>
 </html>
