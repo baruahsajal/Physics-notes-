@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Common Courses - MDC, VAC, AEC</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        /* --- FUTURISTIC THEME --- */
+        :root {
+            --bg-deep: #050507;
+            --text-primary: #e0e0e0;
+            --accent-cyan: #00f3ff;
+            --accent-green: #00ff9d;
+            --accent-purple: #bd00ff;
+            --accent-gold: #ffd700;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border-glass: 1px solid rgba(0, 243, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background-color: var(--bg-deep);
+            color: var(--text-primary);
+            margin: 0; padding-top: 80px;
+        }
+
+        /* Nav */
+        nav { background: rgba(10, 10, 15, 0.95); position: fixed; top: 0; width: 100%; z-index: 1000; border-bottom: 2px solid var(--accent-cyan); padding: 10px 0; backdrop-filter: blur(10px); }
+        nav ul { display: flex; justify-content: center; list-style: none; gap: 15px; padding: 0; flex-wrap: wrap; }
+        nav a { color: var(--accent-cyan); text-decoration: none; font-weight: 600; padding: 8px 15px; border-radius: 20px; font-family: 'Orbitron'; transition: 0.3s; font-size: 0.9rem; }
+        nav a:hover { background: rgba(0, 243, 255, 0.1); box-shadow: 0 0 10px var(--accent-cyan); }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+
+        /* --- TABS SYSTEM --- */
+        .tab-container { display: flex; justify-content: center; gap: 15px; margin-bottom: 40px; flex-wrap: wrap; }
+        
+        .tab-btn {
+            background: transparent;
+            border: 1px solid var(--accent-gold);
+            color: var(--accent-gold);
+            padding: 10px 30px;
+            font-size: 1.1rem;
+            font-family: 'Orbitron';
+            cursor: pointer;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        .tab-btn:hover { background: rgba(255, 215, 0, 0.1); }
+        
+        .tab-btn.active {
+            background: var(--accent-gold);
+            color: black;
+            box-shadow: 0 0 20px var(--accent-gold);
+            font-weight: bold;
+        }
+
+        .content-section { display: none; animation: fadeIn 0.5s; }
+        .content-section.active-content { display: block; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- ACCORDION STRUCTURE --- */
+        .semester-block {
+            background: rgba(19, 19, 31, 0.6);
+            border: var(--border-glass);
+            border-radius: 12px; margin-bottom: 20px;
+            overflow: hidden;
+        }
+        .sem-summary {
+            padding: 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+            font-family: 'Orbitron'; font-size: 1.3rem; color: white;
+            background: linear-gradient(90deg, rgba(255, 215, 0, 0.05), transparent);
+            list-style: none; transition: 0.3s;
+        }
+        .sem-summary:hover { background: rgba(255, 215, 0, 0.1); }
+
+        .subject-list { padding: 20px; }
+        .subject-block { margin-bottom: 15px; border-left: 3px solid var(--accent-purple); background: rgba(255,255,255,0.02); border-radius: 0 8px 8px 0; }
+        
+        .subj-summary {
+            padding: 15px; cursor: pointer; color: var(--accent-purple); font-weight: bold; font-size: 1.1rem; list-style: none;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .subj-summary:hover { color: white; }
+        
+        /* Unit Grid */
+        .unit-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; padding: 15px; }
+        .unit-card { background: #15151e; padding: 15px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.05); transition: 0.3s; }
+        .unit-card:hover { transform: translateY(-3px); border-color: var(--accent-green); }
+        .unit-title { color: var(--accent-green); margin-bottom: 8px; font-weight: 600; font-family: 'Orbitron'; font-size: 0.95rem; }
+        .unit-desc { font-size: 0.85rem; color: #aaa; margin-bottom: 15px; line-height: 1.4; }
+
+        /* Buttons */
+        .btn-group { display: flex; gap: 10px; margin-top: auto; }
+        .btn { flex: 1; padding: 8px; text-align: center; border-radius: 4px; text-decoration: none; font-size: 0.8rem; font-weight: bold; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 5px; }
+        
+        .btn-pdf { border: 1px solid var(--accent-cyan); color: var(--accent-cyan); }
+        .btn-pdf:hover { background: var(--accent-cyan); color: black; box-shadow: 0 0 10px var(--accent-cyan); }
+
+        /* Icons */
+        details[open] > summary .fa-chevron-down { transform: rotate(180deg); }
+        .fa-chevron-down { transition: 0.3s; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <ul>
+            <li><a href="index.html">🏠 Home</a></li>
+            <li><a href="main-course.html">⚛️ Main Course</a></li>
+            <li><a href="common-course.html" style="background: rgba(0, 243, 255, 0.2);">📘 Common Course</a></li>
+            <li><a href="pyq.html">📝 PYQ</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        
+        <div class="tab-container">
+            <button class="tab-btn active" onclick="openTab('mdc')">MDC (Multi-Disciplinary)</button>
+            <button class="tab-btn" onclick="openTab('vac')">VAC (Value Added)</button>
+            <button class="tab-btn" onclick="openTab('aec')">AEC (Ability Enhancement)</button>
+        </div>
+
+        <div id="mdc" class="content-section active-content">
+            [span_0](start_span)<h2 style="text-align: center; color: var(--accent-gold); font-family: 'Orbitron'; margin-bottom: 30px;">Multi-Disciplinary Courses[span_0](end_span)</h2>
+            
+            <details class="semester-block" open>
+                <summary class="sem-summary">Semester 01 <i class="fas fa-chevron-down"></i></summary>
+                <div class="subject-list">
+                    <details class="subject-block">
+                        [span_1](start_span)[span_2](start_span)<summary class="subj-summary">MDC-1: Understanding Physical Formations of the Earth[span_1](end_span)[span_2](end_span)</summary>
+                        <div class="unit-grid">
+                            <div class="unit-card">
+                                <div class="unit-title">Unit 1: Earth's Structure</div>
+                                <div class="unit-desc">Interior of the Earth, Plate Tectonics, Rocks and Minerals.</div>
+                                <div class="btn-group"><a href="#" class="btn btn-pdf">PDF</a></div>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </details>
+
+            <details class="semester-block">
+                <summary class="sem-summary">Semester 02 <i class="fas fa-chevron-down"></i></summary>
+                <div class="subject-list">
+                    <details class="subject-block">
+                        [span_3](start_span)[span_4](start_span)<summary class="subj-summary">MDC-2: Understanding the Changing Environment[span_3](end_span)[span_4](end_span)</summary>
+                        <div class="unit-grid">
+                            <div class="unit-card">
+                                <div class="unit-title">Unit 1: Environmental Dynamics</div>
+                                <div class="unit-desc">Climate Change, Global Warming, Ecological Balance.</div>
+                                <div class="btn-group"><a href="#" class="btn btn-pdf">PDF</a></div>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </details>
+
+            <details class="semester-block">
+                <summary class="sem-summary">Semester 03 <i class="fas fa-chevron-down"></i></summary>
+                <div class="subject-list">
+                    <details class="subject-block">
+                        [span_5](start_span)[span_6](start_span)<summary class="subj-summary">MDC-3: Land and People of Assam[span_5](end_span)[span_6](end_span)</summary>
+                        <div class="unit-grid">
+                            <div class="unit-card">
+                                <div class="unit-title">Unit 1: Geography of Assam</div>
+                                <div class="unit-desc">Physical features, Demography, Culture and Heritage.</div>
+                                <div class="btn-group"><a href="#" class="btn btn-pdf">PDF</a></div>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </details>
+        </div>
+
+        <div id="vac" class="content-section">
+            <h2 style="text-align: center; color: var(--accent-gold); font-family: 'Orbitron'; margin-bottom: 30px;">Value Added Courses</h2>
+            
+            <details class="semester-block" open>
+                <summary class="sem-summary">Semester 01 <i class="fas fa-chevron-down"></i></summary>
+                <div class="subject-list">
+                    <details class="subject-block">
+                        [span_7](start_span)<summary class="subj-summary">VAC-1: Environmental Studies[span_7](end_span)</summary>
+                        <div class="unit-grid">
+                            <div class="unit-card">
+                                <div class="unit-title">Unit 1: Introduction</div>
+                                [span_8](start_span)<div class="unit-desc">Multidisciplinary nature, Scope, Renewable/Non-renewable resources, Sustainable development.[span_8](end_span)</div>
+                                <div class="btn-group"><a href="#" class="btn btn-pdf">PDF</a></div>
+                            </div>
+                            <div class="unit-card">
+                                <div class="unit-title">Unit 2: Ecosystems</div>
+                                [span_9](start_span)<div class="unit-desc">Structure and function, Energy flow, Food chains, Ecological succession.[span_9](end_span)</div>
+                                <div class="btn-group"><a href="#" class="btn btn-pdf">PDF</a></div>
+                            </div>
+                            <div class="unit-card">
+                                <div class="unit-title">Unit 5: Pollution & Laws</div>
+                                <div class="unit-desc">Air, Water, Soil, Noise pollution. [span_10](start_span)Environment Protection Act, Solid waste management.[span_10](end_span)</div>
+                                <div class="btn-group"><a href="#" class="btn btn-pdf">PDF</a></div>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </details>
+
+            <details class="semester-block">
+                <summary class="sem-summary">Semester 02 <i class="fas fa-chevron-down"></i></summary>
+                <div class="subject-list">
+                    <details class="subject-block">
+                        [span_11](start_span)<summary class="subj-summary">VAC-2: Disaster Management[span_11](end_span)</summary>
+                        <div class="unit-grid">
+                            <div class="unit-card">
+                                <div class="unit-title">Unit 1: Introduction</div>
+                                <div class="unit-desc">Types of disasters, Risk assessment, Mitigation strategies.</div>
+                                <div class="btn-group"><a href="#" class="btn btn-pdf">PDF</a></div>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </details>
+
+            <details class="semester-block">
+                <summary class="sem-summary">Semester 03 <i class="fas fa-chevron-down"></i></summary>
+                <div class="subject-list">
+                    <details class="subject-block">
+                        [span_12](start_span)[span_13](start_span)<summary class="subj-summary">VAC-3: Natural Resource Management[span_12](end_span)[span_13](end_span)</summary>
+                        <div class="unit-grid">
+                            <div class="unit-card">
+                                <div class="unit-title">Unit I: Introduction</div>
+                                <div class="unit-desc">Natural resources: Air, Water, Soil, Minerals, Forests, Energy. [span_14](start_span)Classification.[span_14](end_span)</div>
+                                <div class="btn-group"><a href="#" class="btn btn-pdf">PDF</a></div>
+                            </div>
+                            <div class="unit-card">
+                                <div class="unit-title">Unit II: Water & Forest</div>
+                                <div class="unit-desc">Surface/Groundwater management, Indigenous techniques (Dong, Zabo). [span_15](start_span)Forest types.[span_15](end_span)</div>
+                                <div class="btn-group"><a href="#" class="btn btn-pdf">PDF</a></div>
+                            </div>
+                            <div class="unit-card">
+                                <div class="unit-title">Unit III: Mineral Resources</div>
+                                [span_16](start_span)<div class="unit-desc">Exploitation effects, Case studies, Mineral resources of NE India.[span_16](end_span)</div>
+                                <div class="btn-group"><a href="#" class="btn btn-pdf">PDF</a></div>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </details>
+        </div>
+
+        <div id="aec" class="content-section">
+            <h2 style="text-align: center; color: var(--accent-gold); font-family: 'Orbitron'; margin-bottom: 30px;">Ability Enhancement Courses</h2>
+            
+            <details class="semester-block" open>
+                <summary class="sem-summary">Semester 01 <i class="fas fa-chevron-down"></i></summary>
+                <div class="subject-list">
+                    <details class="subject-block">
+                        [span_17](start_span)<summary class="subj-summary">AEC-1: Jogajugmulok Akhomiya[span_17](end_span)</summary>
+                        <div class="unit-grid">
+                            <div class="unit-card">
+                                <div class="unit-title">Unit 1: Communication Basics</div>
+                                <div class="unit-desc">Verbal and Non-verbal communication in Assamese.</div>
+                                <div class="btn-group"><a href="#" class="btn btn-pdf">PDF</a></div>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </details>
+
+            <details class="semester-block">
+                <summary class="sem-summary">Semester 02 <i class="fas fa-chevron-down"></i></summary>
+                <div class="subject-list">
+                    <details class="subject-block">
+                        [span_18](start_span)<summary class="subj-summary">AEC-2: English Communication-I[span_18](end_span)</summary>
+                        <div class="unit-grid">
+                            <div class="unit-card">
+                                <div class="unit-title">Unit 1: Grammar & Usage</div>
+                                <div class="unit-desc">Tenses, Prepositions, Voice change, Sentence structure.</div>
+                                <div class="btn-group"><a href="#" class="btn btn-pdf">PDF</a></div>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </details>
+
+            <details class="semester-block">
+                <summary class="sem-summary">Semester 03 <i class="fas fa-chevron-down"></i></summary>
+                <div class="subject-list">
+                    <details class="subject-block">
+                        <summary class="subj-summary">AEC-3: English Communication-II</summary>
+                        <div class="unit-grid">
+                            <div class="unit-card">
+                                <div class="unit-title">Unit 1: Advanced Writing</div>
+                                <div class="unit-desc">Report writing, CV/Resume, Professional email etiquette.</div>
+                                <div class="btn-group"><a href="#" class="btn btn-pdf">PDF</a></div>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </details>
+        </div>
+
+    </div>
+
+    <script>
+        function openTab(tabName) {
+            var contents = document.getElementsByClassName("content-section");
+            for (var i = 0; i < contents.length; i++) {
+                contents[i].classList.remove("active-content");
+            }
+            var buttons = document.getElementsByClassName("tab-btn");
+            for (var i = 0; i < buttons.length; i++) {
+                buttons[i].classList.remove("active");
+            }
+            document.getElementById(tabName).classList.add("active-content");
+            event.currentTarget.classList.add("active");
+        }
+    </script>
+</body>
+</html>
