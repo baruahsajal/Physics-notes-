@@ -1,150 +1,249 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>B.Sc Physics Complete Syllabus Hub</title>
-    <style>
-        :root { --primary: #003366; --secondary: #0066cc; --bg: #f4f7f6; --text: #333; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); max-width: 1000px; margin: 0 auto; padding: 20px; }
-        
-        h1 { text-align: center; color: var(--primary); border-bottom: 2px solid var(--secondary); padding-bottom: 10px; }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>B.Sc Physics — Semester Hub</title>
 
-        /* Upload Box */
-        .upload-section { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 30px; }
-        select, input { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-        button { background: var(--secondary); color: white; border: none; padding: 12px; width: 100%; border-radius: 4px; cursor: pointer; font-size: 16px; }
-        button:hover { background: var(--primary); }
+  <style>
+    :root{
+      --primary:#0b3d91;
+      --accent:#0066cc;
+      --bg:#f7f9fb;
+      --card:#ffffff;
+      --muted:#6b7280;
+      --success:#10b981;
+      --danger:#ef4444;
+    }
+    *{box-sizing:border-box}
+    body{
+      font-family: Inter, "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(180deg,#f4f7fb 0%,var(--bg)100%);
+      color:#111827;
+      margin:0;
+      padding:20px;
+    }
+    .container{max-width:1100px;margin:0 auto}
+    header.site-header{text-align:center;margin-bottom:20px}
+    header.site-header h1{margin:0 0 6px;color:var(--primary)}
+    .lead{color:var(--muted);margin:0}
 
-        /* Syllabus Accordion */
-        details { margin-bottom: 10px; background: white; border-radius: 5px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-        summary { cursor: pointer; padding: 15px; font-weight: bold; list-style: none; user-select: none; }
-        
-        /* Semester Level */
-        .sem-level > summary { background: var(--primary); color: white; }
-        
-        /* Type Level (Major/Minor) */
-        .type-level { margin: 10px; border-left: 3px solid var(--secondary); }
-        .type-level > summary { background: #e6f2ff; color: var(--primary); }
+    /* Card */
+    .card{background:var(--card);padding:16px;border-radius:10px;box-shadow:0 6px 18px rgba(15,23,42,0.06);margin-bottom:20px}
 
-        /* Paper Level */
-        .paper-box { padding: 15px; border-top: 1px solid #eee; }
-        .paper-header { font-size: 1.1em; font-weight: bold; color: var(--secondary); display: flex; justify-content: space-between; align-items: center; }
-        
-        /* Syllabus Units */
-        .syllabus-units { font-size: 0.85em; color: #666; background: #fafafa; padding: 8px; margin: 5px 0 15px 0; border-radius: 4px; border: 1px dashed #ccc; }
-        .unit-badge { display: inline-block; background: #eee; padding: 2px 6px; margin: 2px; border-radius: 3px; }
+    /* Upload form */
+    .upload-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+    label{display:block;font-size:0.9rem;margin-bottom:6px;color:#374151}
+    select,input[type="file"]{width:100%;padding:10px 12px;border-radius:8px;border:1px solid #e5e7eb;background:#fff}
+    .form-actions{text-align:right;margin-top:12px}
+    .btn{padding:10px 16px;border-radius:8px;border:none;cursor:pointer}
+    .btn.primary{background:linear-gradient(90deg,var(--accent),var(--primary));color:#fff}
+    .small-muted{color:var(--muted);font-size:0.9rem}
 
-        /* Files */
-        .file-list { list-style: none; padding: 0; }
-        .file-list li { display: flex; justify-content: space-between; padding: 8px; border-bottom: 1px solid #f0f0f0; }
-        .file-list a { color: var(--secondary); text-decoration: none; font-weight: bold; }
-    </style>
+    /* messages */
+    .flash{padding:10px;border-radius:8px;margin-bottom:12px}
+    .flash.success{background:rgba(16,185,129,0.08);color:var(--success);border:1px solid rgba(16,185,129,0.12)}
+    .flash.error{background:rgba(239,68,68,0.06);color:var(--danger);border:1px solid rgba(239,68,68,0.08)}
 
-    <script>
-        const structure = {{ structure | tojson }};
+    /* Syllabus accordion */
+    details.sem-level{margin-bottom:12px;border-radius:10px;overflow:hidden;border:1px solid #e6eefb}
+    details.sem-level>summary{
+      background:linear-gradient(90deg,rgba(11,61,145,0.95),rgba(0,102,204,0.95));
+      color:#fff;padding:12px 16px;font-weight:600;list-style:none;cursor:pointer;
+    }
+    details.type-level{margin:10px;border-left:4px solid var(--accent);border-radius:8px;overflow:hidden}
+    details.type-level>summary{background:#eef6ff;color:var(--primary);padding:10px 12px;font-weight:600;list-style:none;cursor:pointer}
 
-        function updateTypes() {
-            const sem = document.getElementById('semester').value;
-            const typeSelect = document.getElementById('course_type');
-            const paperSelect = document.getElementById('paper');
-            
-            typeSelect.innerHTML = '<option value="">Select Course Type</option>';
-            paperSelect.innerHTML = '<option value="">Select Paper</option>';
+    .papers-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;padding:12px}
+    .paper-card{background:#fff;border-radius:8px;padding:10px;border:1px solid #eef3ff;box-shadow:0 4px 14px rgba(7,11,38,0.02)}
+    .paper-header h3{margin:0 0 8px 0;font-size:1.02rem;color:var(--accent)}
+    .syllabus-units{background:#fbfdff;padding:8px;border-radius:6px;margin-bottom:8px;border:1px dashed #e6eefb;font-size:0.95rem}
+    .unit-badge{display:inline-block;background:#f1f7ff;color:#0b3d91;padding:4px 8px;border-radius:999px;margin:3px 3px 0 0;font-size:0.85rem}
+    .file-list{list-style:none;padding:0;margin:6px 0 0 0}
+    .file-list li{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #f3f6fb;font-size:0.95rem}
+    .download-link{color:var(--accent);text-decoration:none;font-weight:600}
+    .muted{color:#9ca3af;font-style:italic}
 
-            if (sem) {
-                Object.keys(structure[sem]).forEach(type => {
-                    typeSelect.innerHTML += `<option value="${type}">${type}</option>`;
-                });
-            }
-        }
+    footer.site-footer{text-align:center;margin-top:18px;color:var(--muted);font-size:0.9rem}
 
-        function updatePapers() {
-            const sem = document.getElementById('semester').value;
-            const type = document.getElementById('course_type').value;
-            const paperSelect = document.getElementById('paper');
+    @media (max-width:600px){.form-actions{text-align:center}}
+  </style>
 
-            paperSelect.innerHTML = '<option value="">Select Paper</option>';
-
-            if (sem && type) {
-                // Here "papers" is an object { "PaperName": [Units], ... }
-                // We only need the keys (Paper Names) for the dropdown
-                Object.keys(structure[sem][type]).forEach(paper => {
-                    paperSelect.innerHTML += `<option value="${paper}">${paper}</option>`;
-                });
-            }
-        }
-    </script>
+  <script>
+    // structure is injected by server-side templating: a nested object
+    // Example usage in JS: Object.keys(structure).forEach(...)
+    const structure = {{ structure | tojson }};
+  </script>
 </head>
 <body>
+  <div class="container">
+    <header class="site-header">
+      <h1>📚 B.Sc Physics — Semester Hub</h1>
+      <p class="lead">Upload and browse notes: Physics (Major), Math (Minor), and Common Courses (MDC, VAC, AEC) — organized semester → paper → units.</p>
+    </header>
 
-    <h1>📚 Physics Major & Math Minor Hub</h1>
+    <main>
+      <section class="card upload-section" aria-labelledby="upload-heading">
+        <h2 id="upload-heading">📤 Upload Notes</h2>
 
-    <div class="upload-section">
-        <h3>📤 Upload Notes</h3>
-        <form action="/upload" method="POST" enctype="multipart/form-data">
-            <select name="semester" id="semester" onchange="updateTypes()" required>
+        <!-- Flash messages (if any) -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="flash {{ 'success' if category=='success' else 'error' }}">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <form id="upload-form" action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data">
+          <div class="upload-grid">
+            <div>
+              <label for="semester">Semester</label>
+              <select name="semester" id="semester" required onchange="updateTypes()">
                 <option value="">Select Semester</option>
                 {% for sem in structure.keys() %}
-                <option value="{{ sem }}">{{ sem }}</option>
+                  <option value="{{ sem }}">{{ sem }}</option>
                 {% endfor %}
-            </select>
-
-            <select name="course_type" id="course_type" onchange="updatePapers()" required>
-                <option value="">Select Course Type</option>
-            </select>
-
-            <select name="paper" id="paper" required>
-                <option value="">Select Paper</option>
-            </select>
-
-            <input type="file" name="file" required>
-            <button type="submit">Upload</button>
-        </form>
-    </div>
-
-    {% for sem, types in structure.items() %}
-    <details class="sem-level">
-        <summary>{{ sem }}</summary>
-        
-        {% for type, papers in types.items() %}
-        <details class="type-level">
-            <summary>{{ type }}</summary>
-            
-            {% for paper_name, units in papers.items() %}
-            <div class="paper-box">
-                <div class="paper-header">
-                    <span>📄 {{ paper_name }}</span>
-                </div>
-                
-                <div class="syllabus-units">
-                    <strong>Syllabus Units:</strong><br>
-                    {% for unit in units %}
-                        <span class="unit-badge">{{ unit }}</span>
-                    {% endfor %}
-                </div>
-
-                <ul class="file-list">
-                    {% set file_list = files[sem][type][paper_name] %}
-                    {% if file_list %}
-                        {% for f in file_list %}
-                        <li>
-                            <span>{{ f }}</span>
-                            <a href="{{ url_for('download_file', filepath=sem + '/' + type + '/' + paper_name + '/' + f) }}">⬇ Download</a>
-                        </li>
-                        {% endfor %}
-                    {% else %}
-                        <li style="color:#999; font-style:italic;">No notes uploaded yet.</li>
-                    {% endif %}
-                </ul>
+              </select>
             </div>
-            {% endfor %}
-            
-        </details>
+
+            <div>
+              <label for="course_type">Course Type</label>
+              <select name="course_type" id="course_type" required onchange="updatePapers()">
+                <option value="">Select Course Type</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="paper">Paper / Subject</label>
+              <select name="paper" id="paper" required>
+                <option value="">Select Paper</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="file">File</label>
+              <input type="file" id="file" name="file" required>
+              <div class="small-muted" style="margin-top:6px">Allowed: pdf, docx, pptx, jpg, png. Max recommended size: 50MB.</div>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn primary">Upload</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="card syllabus-section" aria-labelledby="syllabus-heading">
+        <h2 id="syllabus-heading">📖 Syllabus & Uploaded Notes</h2>
+
+        {% for sem, types in structure.items() %}
+          <details class="sem-level" {% if loop.first %}open{% endif %}>
+            <summary>{{ sem }}</summary>
+            <div class="sem-content">
+              {% for type, papers in types.items() %}
+                <details class="type-level">
+                  <summary>{{ type }}</summary>
+
+                  <div class="papers-grid">
+                    {% for paper_name, units in papers.items() %}
+                      <article class="paper-card" aria-labelledby="paper-{{ loop.index }}">
+                        <header class="paper-header">
+                          <h3 id="paper-{{ loop.index }}">📄 {{ paper_name }}</h3>
+                        </header>
+
+                        <div class="syllabus-units">
+                          <strong>Units:</strong>
+                          <div class="unit-list">
+                            {% for unit in units %}
+                              <span class="unit-badge">{{ unit }}</span>
+                            {% endfor %}
+                          </div>
+                        </div>
+
+                        <div class="uploaded-files">
+                          <strong>Notes:</strong>
+                          <ul class="file-list">
+                            {% set file_list = files[sem][type][paper_name] %}
+                            {% if file_list %}
+                              {% for f in file_list %}
+                                <li>
+                                  <span class="file-name">{{ f }}</span>
+                                  <a class="download-link" href="{{ url_for('download_file', filepath=sem + '/' + type + '/' + paper_name + '/' + f) }}">⬇ Download</a>
+                                </li>
+                              {% endfor %}
+                            {% else %}
+                              <li class="muted">No notes uploaded yet.</li>
+                            {% endif %}
+                          </ul>
+                        </div>
+                      </article>
+                    {% endfor %}
+                  </div>
+
+                </details>
+              {% endfor %}
+            </div>
+          </details>
         {% endfor %}
 
-    </details>
-    {% endfor %}
+      </section>
+    </main>
 
+    <footer class="site-footer">
+      <small>Organize your B.Sc. notes — Physics Major, Math Minor, and common courses. Customize the syllabus on the server.</small>
+    </footer>
+  </div>
+
+  <script>
+    // Cascading selects — reads the `structure` object provided by the template
+    function updateTypes() {
+      const sem = document.getElementById('semester').value;
+      const typeSelect = document.getElementById('course_type');
+      const paperSelect = document.getElementById('paper');
+
+      typeSelect.innerHTML = '<option value="">Select Course Type</option>';
+      paperSelect.innerHTML = '<option value="">Select Paper</option>';
+
+      if (sem && structure[sem]) {
+        Object.keys(structure[sem]).forEach(type => {
+          const opt = document.createElement('option');
+          opt.value = type;
+          opt.textContent = type;
+          typeSelect.appendChild(opt);
+        });
+      }
+    }
+
+    function updatePapers() {
+      const sem = document.getElementById('semester').value;
+      const type = document.getElementById('course_type').value;
+      const paperSelect = document.getElementById('paper');
+
+      paperSelect.innerHTML = '<option value="">Select Paper</option>';
+
+      if (sem && type && structure[sem] && structure[sem][type]) {
+        Object.keys(structure[sem][type]).forEach(paper => {
+          const opt = document.createElement('option');
+          opt.value = paper;
+          opt.textContent = paper;
+          paperSelect.appendChild(opt);
+        });
+      }
+    }
+
+    // Protect against accidental form submission without selecting structured fields
+    document.getElementById('upload-form').addEventListener('submit', function(e){
+      const sem = document.getElementById('semester').value;
+      const type = document.getElementById('course_type').value;
+      const paper = document.getElementById('paper').value;
+      const file = document.getElementById('file').files[0];
+
+      if (!sem || !type || !paper || !file) {
+        e.preventDefault();
+        alert('Please select semester, course type, paper and choose a file before uploading.');
+      }
+    });
+  </script>
 </body>
 </html>
